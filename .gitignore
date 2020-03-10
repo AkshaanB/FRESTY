@@ -1,6 +1,6 @@
 
-# Created by https://www.gitignore.io/api/node,venv,ionic3,angular,intellij
-# Edit at https://www.gitignore.io/?templates=node,venv,ionic3,angular,intellij
+# Created by https://www.gitignore.io/api/node,venv,ionic3,angular,intellij,visualstudiocode
+# Edit at https://www.gitignore.io/?templates=node,venv,ionic3,angular,intellij,visualstudiocode
 
 ### Angular ###
 ## Angular ##
@@ -264,4 +264,4 @@ env.bak/
 venv.bak/
 pip-selfcheck.json
 
-# End of https://www.gitignore.io/api/node,venv,ionic3,angular,intellij
+# End of https://www.gitignore.io/api/node,venv,ionic3,angular,intellij,visualstudiocode
