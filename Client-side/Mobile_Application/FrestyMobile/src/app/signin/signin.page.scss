@@ -1,0 +1,63 @@
+ion-content {
+    --background: #fff url("../../assets/signin.jpg") no-repeat left center / cover;
+}
+
+.box1{
+    padding-top: 70px;
+    padding-left: 50px;
+}
+
+.box2{
+    padding-top: 90px;
+    padding-left: 50px;
+}
+
+ion-item{
+    max-height: 40px;
+    max-width: 90%;
+    border-radius: 5px;
+}
+
+.googlebutton{
+    width: 280px;
+    color: #fff;
+    height: 35px;
+    background-color:#EE1B1B;
+    border-radius: 8px;
+}
+
+.guestbutton{
+    width: 280px;
+    background-color: #7EC67F;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.signinbutton {
+    margin-left: 198px;
+    margin-right: 200px;
+    width: 90px;
+    font-size: 15px;
+    color: white;
+    background-color:#7EC67F;
+    border-radius: 8px;
+}
+
+.link{
+    text-decoration: none;
+    color: white;
+}
+
+h1{
+    color: black;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+p{
+    color: black;
+    font-weight: 500;
+}
+
+
+
