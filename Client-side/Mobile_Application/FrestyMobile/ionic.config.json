@@ -1,0 +1,7 @@
+{
+  "name": "FrestyMobile",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
