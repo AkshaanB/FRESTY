@@ -37,9 +37,13 @@ def predict():
     img = img/255
     img = np.reshape(img,[1,100,100,3])
     proba = model.predict(img)
+    print(proba)
     if proba<=5.0:
         return jsonify({"Quality grading results: ": "It's an apple that is not good to go to market!"})
     elif 12.0>proba>5.0:
         return jsonify({"Quality grading results: ": "You can decide whether putting it market or not"})
     else:
         return jsonify({"Quality grading results: ": "It's an apple that is good to go to market!"})
+
+if __name__ == '__main__':
+    app.run()
