@@ -12,6 +12,14 @@ const routes: Routes = [
     path: 'signup',
     loadChildren: () => import('./signup/signup.module').then( m => m.SignupPageModule)
   },
+  {
+    path: 'guestlogin',
+    loadChildren: () => import('./guestlogin/guestlogin.module').then( m => m.GuestloginPageModule)
+  },
+  {
+    path: 'captureimage',
+    loadChildren: () => import('./captureimage/captureimage.module').then( m => m.CaptureimagePageModule)
+  },
 ];
 
 @NgModule({
