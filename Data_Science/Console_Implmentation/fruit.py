@@ -2,6 +2,7 @@ import flask
 from flask import Flask, jsonify, request
 import tensorflow as tf
 import cv2
+import cvlib as cv
 import numpy as np
 import os
 
@@ -31,19 +32,25 @@ def predict():
               loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
               metrics=['accuracy'])
     img = cv2.imread('C:\\Users\\User\\FRESTY\\uploaded_images\\test_image.jpg')
-    img = cv2.resize(img,(100,100))
-    img = tf.cast(img, tf.float32)
-    img = tf.keras.preprocessing.image.img_to_array(img)
-    img = img/255
-    img = np.reshape(img,[1,100,100,3])
-    proba = model.predict(img)
-    print(proba)
-    if proba<=5.0:
-        return jsonify({"Quality grading results: ": "It's an apple that is not good to go to market!"})
-    elif 12.0>proba>5.0:
-        return jsonify({"Quality grading results: ": "You can decide whether putting it market or not"})
+    bbox, label, conf = cv.detect_common_objects(img)
+    # output_image = draw_bbox(im, bbox, label, conf)
+    print(label)
+    if('apple' in label or 'orange' in label or 'tomato' in label):
+        img = cv2.resize(img,(100,100))
+        img = tf.cast(img, tf.float32)
+        img = tf.keras.preprocessing.image.img_to_array(img)
+        img = img/255
+        img = np.reshape(img,[1,100,100,3])
+        proba = model.predict(img)
+        print(proba)
+        if proba<=5.0:
+            return jsonify({"Quality grading results: ": "It's not good to go to market!"})
+        elif 12.0>proba>5.0:
+            return jsonify({"Quality grading results: ": "You can decide whether putting it market or not"})
+        else:
+            return jsonify({"Quality grading results: ": "It's good to go to market!"})
     else:
-        return jsonify({"Quality grading results: ": "It's an apple that is good to go to market!"})
+        return jsonify({"Result: ": "It's neither a fruit nor a vegetable"})
 
 if __name__ == '__main__':
     app.run()
