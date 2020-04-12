@@ -10,10 +10,32 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { Camera } from '@ionic-native/camera/ngx';
 
+import { HttpClientModule } from '@angular/common/http';
+import { Storage, IonicStorageModule } from '@ionic/storage';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+
+export function jwtOptionsFacgtory(storage){
+  return{
+    tokenGetter: () => {
+      return storage.get('access_token');
+    },
+    whitelistedDomains: ['localhost:5000']
+  }
+}
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule,HttpClientModule,
+  IonicStorageModule.forRoot(),
+  JwtModule.forRoot({
+    jwtOptionsProvider: {
+      provide: JWT_OPTIONS,
+      useFactory: jwtOptionsFacgtory,
+      deps: [Storage]
+    }
+  })
+],
   providers: [
     StatusBar,
     SplashScreen,Camera,
