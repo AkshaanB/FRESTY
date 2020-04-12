@@ -54,7 +54,7 @@ router.post(
 
             console.log(pass1)
             console.log(confirmPass)
-            comsole.log(pass1.equals(confirmPass))
+            console.log(pass1.equals(confirmPass))
             if (!(pass1.equals(confirmPass))) {
                 return res.status(400).json({
                     msg: "password does not match"
