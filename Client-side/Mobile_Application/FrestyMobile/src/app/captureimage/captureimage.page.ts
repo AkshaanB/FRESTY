@@ -3,7 +3,7 @@ import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-captureimage',
-  templateUrl: './captureimage.page.html',
+  templateUrl: './captureimage.page.html', 
   styleUrls: ['./captureimage.page.scss'],
 })
 export class CaptureimagePage implements OnInit {

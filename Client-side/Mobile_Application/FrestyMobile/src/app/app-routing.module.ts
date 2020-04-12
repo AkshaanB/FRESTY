@@ -20,6 +20,10 @@ const routes: Routes = [
     path: 'captureimage',
     loadChildren: () => import('./captureimage/captureimage.module').then( m => m.CaptureimagePageModule)
   },
+  {
+    path: 'google-login',
+    loadChildren: () => import('./google-login/google-login.module').then( m => m.GoogleLoginPageModule)
+  },
 ];
 
 @NgModule({
