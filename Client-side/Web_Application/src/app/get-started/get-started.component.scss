@@ -1,0 +1,51 @@
+body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif;}
+body, html {
+  height: 100%;
+  color: rgb(14, 12, 12);
+  line-height: 1.8;
+}
+
+.bgimg-1, .bgimg-2, .bgimg-3 {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  // background-size: cover;
+  background-size: contain;  
+}
+
+.bgimg-1 {
+  background-image: url("https://vistapointe.net/images/fruits-vegetables-8.jpg");
+  min-height: 100%;
+}
+
+.bgimg-3 {
+  background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTANeA-6uKv7fTSfIOywIDcN9JaGZKe_Kc0ItKe8ZxugyZhaLkV");
+  min-height: 400px;
+  background-size: cover;
+}
+
+.fa-user {
+  font-size: 18px;
+  }
+
+.fa-th{
+  font-size: 18px;
+}    
+
+.fa-home{
+  font-size: 18px;
+}
+
+.fa-mobile{
+  font-size: 40px;
+}
+
+.w3-wide {letter-spacing: 17px;}
+.w3-hover-opacity {cursor: pointer;}
+
+@media only screen and (max-device-width: 1600px) {
+  .bgimg-1, .bgimg-2, .bgimg-3 {
+    background-attachment: scroll;
+    min-height: 400px;
+  }
+}
