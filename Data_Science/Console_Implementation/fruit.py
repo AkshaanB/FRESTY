@@ -21,8 +21,8 @@ def home():
 # APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 # target = os.path.join(APP_ROOT,'uploaded_images/')
 
-@app.route("/predict",methods=["POST"])
-def predict():
+@app.route("/predict/one",methods=["POST"])
+def predict_one():
     imagefile = request.files.get('imagefile', '')
     imagefile.save('C:\\Users\\User\\FRESTY\\uploaded_images\\test_image.jpg')
     file_name = 'C:\\Users\\User\\fresty.h5'
@@ -90,6 +90,13 @@ def predict():
             return jsonify({"Quality grading results: ": "It's good to go to market!"})
     else:
         return jsonify({"Result: ": "It's neither a fruit nor a vegetable"})
+
+
+@app.route("/predict/many",methods=["POST"])
+def predict_many():
+    return jsonify({"Result: ": "Predicting for multiple fruits and vegetables"})
+
+
 
 if __name__ == '__main__':
     app.run()
