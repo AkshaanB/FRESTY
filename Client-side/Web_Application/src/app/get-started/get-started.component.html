@@ -1,0 +1,96 @@
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<body>
+<div class="w3-top">
+  <div class="w3-bar" id="myNavbar">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-left">
+      <i class="fa fa-bars"></i>
+    </a>
+    <a href="http://localhost:4200/getstarted" class="w3-bar-item w3-button"><i class="fa fa-home"></i> HOME</a>
+      <a href="http://localhost:4200/getstarted/product" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> ITEMS</a>
+      <a href="http://localhost:4200/getstarted/product/signin" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-user"></i> SIGN IN</a>
+    </div>  
+</div>
+
+<div class="bgimg-1 w3-display-container" id="home">
+  <div class="w3-display-bottommiddle" style="white-space:nowrap;">
+    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity">WELCOME <span class="w3-hide-small">TO</span> FRESTY</span>
+  </div>
+</div>
+
+<div class="w3-content w3-container w3-padding-64" id="about">
+  <h3 class="w3-center">ABOUT FRESTY</h3>
+  <p>Welcome to our website. Fresty helps you to distinguish good fresh fruits and vegetables from the bad ones. 
+    Yet, with the busy lifestyles, inspecting and buying fresh fruits and vegetables has made a tedious process to the public.
+     Moreover, the suppliers and retailers don’t quality grade their products. 
+     Lack of proper quality grading devices is one of the major reasons. Moreover fresh fruits and vegetables won’t undergo appropriate quality grading process before those are sold to customers. To sort out this issue Fresty helps you to quality grade the Fruits and vegetables.
+     Through this web application the user can view the history of the quality grading results that they have done. Yet, a user can only get this service if logged into the system through the mobile application. 
+     Furthermore, the user also needs to login to the web application to view the history of quality grading results. Currently  this quality grading system will work for limited fruits and vegetables.</p>
+  
+     <div class="w3-row">
+    <div class="w3-col m6 w3-center w3-padding-large">
+      <p><b><i class="fa fa-mobile w3-margin-right"></i>FRESTY App</b></p><br>
+      <img src="https://3.bp.blogspot.com/-0X7Tb96v3gY/XnW5sLrzVfI/AAAAAAAAAPQ/P8oDvhR_ccE-ZNyo1gvMRTEP_xPL7J21gCK4BGAYYCw/s320/mobileapp.jpg" class="w3-round w3-image" alt="Photo of Me" width="270">
+    </div>
+
+    <div class="w3-col m6 w3-hide-small w3-padding-large"><br><br><br><br><br><br>
+      <p>The image in left side is the first view of the mobile app. The user needs to log into the mobile application to quality grade the fruits and vegetables. Or the user can use the application as a guest user.  
+        Once the user logged in, they should takes a photo and the image will automatically get uploaded to the system. 
+        Then the system will recognize whether it's fresh fruits or vegetables in the uploaded image. 
+        Also, bounding boxes will be created around the recognized fresh fruits or vegetables in the image.
+         Features of those recognized fresh fruits or vegetables are extracted as the next step.
+          Then the features are analyzed and given the output of the quality grading process through this Mobille application. </p>
+    </div>
+  </div>  
+</div>
+
+<div id="modal01" class="w3-modal w3-black" onclick="this.style.display='none'">
+  <span class="w3-button w3-large w3-black w3-display-topright" title="Close Modal Image"><i class="fa fa-remove"></i></span>
+  <div class="w3-modal-content w3-animate-zoom w3-center w3-transparent w3-padding-64">
+    <img id="img01" class="w3-image">
+    <p id="caption" class="w3-opacity w3-large"></p>
+  </div>
+</div>
+
+<div class="bgimg-3 w3-display-container">   <!-- w3-opacity-min -->
+  <div class="w3-display-middle">
+     <span class="w3-xxlarge w3-text-white w3-wide">CONTACT</span>
+  </div>
+</div>
+
+<div class="w3-content w3-container w3-padding-64" id="contact">
+  <h3 class="w3-center">TEAM CASSANDRA</h3>
+  <p class="w3-center"><em>Contact us for Help!</em></p>
+
+  <div class="w3-row w3-padding-32 w3-section">
+    <div class="w3-col m4 w3-container">
+    </div>
+    <div class="w3-col m8 w3-panel">
+      <div class="w3-large w3-margin-bottom">
+        <i class="fa fa-map-marker fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Wellawatta, Colombo<br>
+        <i class="fa fa-phone fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Phone: +76 6027633<br>
+        <i class="fa fa-envelope fa-fw w3-hover-text-black w3-xlarge w3-margin-right"></i> Email: Fresty@gmail.com<br>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <footer class="w3-center w3-black w3-padding-64">    <!--w3-opacity w3-hover-opacity-off -->
+  <a href="http://localhost:4200/getstarted" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
+  <div class="w3-xlarge w3-section">
+    <a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook-official w3-hover-opacity"></i></a>
+    <a href="https://www.instagram.com/" target="_blank"><i class="fa fa-instagram w3-hover-opacity"></i></a>
+    <a href="https://www.snapchat.com/" target="_blank"><i class="fa fa-snapchat w3-hover-opacity"></i></a>
+    <a href="https://www.pinterest.com/" target="_blank"><i class="fa fa-pinterest-p w3-hover-opacity"></i></a>
+    <a href="https://twitter.com/" target="_blank"><i class="fa fa-twitter w3-hover-opacity"></i></a>
+    <a href="https://www.linkedin.com/" target="_blank"><i class="fa fa-linkedin w3-hover-opacity"></i></a>
+  </div>
+</footer>
+
+</body>
+
