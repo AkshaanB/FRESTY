@@ -1,0 +1,200 @@
+$primary: #042A4F;
+$accent: #E65891;
+$secondary: #ccc;
+$bg-color: #f4f4f4;
+$text-color: #2a2a2a;
+$line-height: 1.25;
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: "Lato", sans-serif;
+    line-height: $line-height;
+    color: $text-color;
+    font-weight: 500;
+}
+
+.container {
+    max-width: 1280px;
+    margin: 3rem auto;
+    padding: 1rem;
+}
+
+h1 {
+    text-align: center;
+}
+
+button {
+    font-size: 1rem;
+    padding: 0.35em 0.75em;
+    line-height: 1;
+    background-color: transparent;
+    border: 0.125rem solid $text-color;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: 0.1s;
+    outline: 0;
+    
+    &:hover {
+        background-color: $text-color;
+        color: #fff;
+    }
+    
+
+    .fa-user {
+        font-size: 18px;
+        }
+    
+    .fa-th{
+        font-size: 18px;
+    }    
+    
+    .fa-home{
+        font-size: 18px;
+    }
+    
+    &.btn--primary {
+        border-color: $primary;
+        color: $primary;
+        
+        &:hover {
+            background-color: $primary;
+            color: #fff;
+        }
+    }
+    
+    &.btn--accent {
+        border-color: $accent;
+        color: $accent;
+        
+        &:hover {
+            background-color: $accent;
+            color: #fff;
+        }
+    }
+}
+
+.posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 2.5rem;
+    
+    @media(max-width: 1140px) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    @media(max-width: 768px) {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+$excerpt-height: 5rem * $line-height;
+$content-height: (1.35rem + 1rem) + $excerpt-height + (1rem + 2 * 0.35rem + 1rem ) + 0.25rem + 0.1rem;
+$content-height-collapsed: (1.35rem + 1rem) + (2rem * $line-height);
+$content-overlap-collapsed: 3rem;
+$content-overlap: ($content-height - $content-height-collapsed) + $content-overlap-collapsed;
+
+.post {
+    
+    &__image {
+        width: 100%;
+        height: 240px;
+        position: relative;
+        overflow: hidden;
+        
+        &:before,
+        &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            width: 100%; height: 100%; 
+        }
+        
+        &:before {
+            background-size: cover;
+            background-position: center center;
+            transform: scale(1);
+            filter: blur(0);
+            transition: 2s cubic-bezier(0, 0.6, 0.2, 1);
+        }
+        
+        &:after {            
+            background: linear-gradient(30deg, $primary 0%, $accent 100%);
+            background-size: 100% 300%;
+            background-position: bottom left;
+            opacity: 0.15;
+            transition: 2s cubic-bezier(0, 0.6, 0.2, 1);
+        }
+        
+        &--1:before { background-image: url('https://www.hdwallpaper.nu/wp-content/uploads/2017/03/tomato-3.jpg'); }
+        &--2:before { background-image: url('https://c1.wallpaperflare.com/preview/756/443/682/potatoes-vegetables-erdfrucht-bio.jpg'); }
+        &--3:before { background-image: url('https://seedsnpots.com/wp-content/uploads/2017/10/onion.jpg'); }
+        &--4:before { background-image: url('https://www.itl.cat/pngfile/big/83-839052_red-apple-hd-desktop-wallpapers-4-wallpapers-red.jpg'); }
+        &--5:before { background-image: url('https://www.wallpaperbetter.com/wallpaper/529/645/193/fruit-oranges-desktop-backgrounds-1080P-wallpaper-middle-size.jpg'); }
+        &--6:before { background-image: url('https://i.pinimg.com/originals/5f/fc/2d/5ffc2dcadd9b308450dd971a98434a15.jpg'); }
+    }
+    
+    &__content {
+        margin: -1 * $content-overlap-collapsed 1.5rem 0;
+        padding: 1.5rem;
+        background-color: #fff;
+        border-radius: 3px;
+        box-shadow: 0 1rem 3rem rgba(0,0,0,0.15);
+        transition: margin 0.2s ease-in-out;
+        position: relative;
+        z-index: 1;
+        user-select: none;
+    }
+    
+    &__inside {
+        overflow: hidden;
+        height: $content-height-collapsed;
+        transition: height 0.2s ease-in-out;
+    }
+    
+    &__title {
+        font-size: 1.35rem;
+        line-height: 1;
+        margin: 0 0 1rem;
+        font-weight: 300;
+        color: $primary;
+    }
+    
+    &__excerpt {
+        overflow: hidden;
+        margin: 0;
+        max-height: $excerpt-height;
+        position: relative;
+    }
+    
+    &__button {
+        margin-top: 1rem;
+    }
+    
+    
+}
+
+.post:hover {
+    .post {
+        &__content {
+            margin-top: -1 * $content-overlap;
+        }
+        
+        &__inside {
+            height: $content-height;
+        }
+        
+        &__image {
+            &:after { opacity: 0.5; }
+            
+            &:before {
+                transform: scale(1.1);
+                filter: blur(10px);
+            }
+            
+        }
+    }
+}
+
