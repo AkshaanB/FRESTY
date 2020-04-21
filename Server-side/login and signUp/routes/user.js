@@ -12,7 +12,7 @@ const User = require("../User");
  */
 
 router.post(
-    "/signup",
+    "/register",
     [
         check("username", "Please Enter a Valid Username")
         .not()
