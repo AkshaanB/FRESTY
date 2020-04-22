@@ -1,6 +1,5 @@
 <ion-content >
 
-  
   <ion-button color="light" class="backbutton" href="/signin">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-button>  
@@ -9,26 +8,30 @@
   <p>Create<br> Account</p>
   </div>
 
-  <form  #formSignup="ngForm">
+  <form [formGroup]="credentialsForm" (ngSubmit)="onSubmit()">
   <div class="box2">
   
   <ion-item color="dark">
-  <ion-icon name="person"></ion-icon>&nbsp;&nbsp;<ion-input type="text" name="userName" placeholder="Username" required  ngModel ></ion-input>
+  <ion-icon name="person"></ion-icon>&nbsp;&nbsp;<ion-input type="text" formControlName="username" placeholder="Username"  ></ion-input>
   </ion-item><br> 
+
   <ion-item color="dark">
-    <ion-icon name="mail"></ion-icon>&nbsp;&nbsp;<ion-input type="email" name="email" placeholder="Email Address" required  ngModel></ion-input>
+    <ion-icon name="mail"></ion-icon>&nbsp;&nbsp;<ion-input type="email" formControlName="email" placeholder="Email Address" ></ion-input>
   </ion-item><br>
+
   <ion-item color="dark">
-    <ion-icon name="lock-closed"></ion-icon>&nbsp;&nbsp;<ion-input type="password" name="password" placeholder="Password" required  ngModel></ion-input>
+    <ion-icon name="lock-closed"></ion-icon>&nbsp;&nbsp;<ion-input type="password" formControlName="password" placeholder="Password" ></ion-input>
   </ion-item><br>
+
   <ion-item color="dark">
-    <ion-icon name="lock-closed"></ion-icon>&nbsp;&nbsp;<ion-input type="password" name="confirmPassword" placeholder="Confirm Password" required  ngModel></ion-input>
+    <ion-icon name="lock-closed"></ion-icon>&nbsp;&nbsp;<ion-input type="password" formControlName="confirmpassword" placeholder="Confirm Password" ></ion-input>
   </ion-item><br>
   </div>
 
   <div class="box3">
-  <ion-button class="nextbutton" fill="clear" [disabled]="formSignup.invalid">Next</ion-button>
+  <ion-button class="nextbutton" type="button" (click)="register()" fill="clear" [disabled]="!credentialsForm.valid" >Sign up</ion-button>
   </div> 
+
 </form>
 
 </ion-content>

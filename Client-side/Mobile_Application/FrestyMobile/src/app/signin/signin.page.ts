@@ -15,7 +15,7 @@ export class SigninPage implements OnInit {
 
   ngOnInit() {
     this.credentialsForm = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.email]],     //user name is required 
+      email: ['', [Validators.required, Validators.email]],     //user name is required 
       password: ['', [Validators.required, Validators.minLength(6)]]   //password is required with a minimum length of 6 characters
     });
   }
@@ -23,5 +23,7 @@ export class SigninPage implements OnInit {
   onSubmit(){
     this.authService.login(this.credentialsForm.value).subscribe();
   }
+
+  
 
 }

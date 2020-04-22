@@ -42,7 +42,7 @@ export class AuthService {
     }
 
     register(credentials){
-      return this.http.post(`${this.url}/api/register`, credentials).pipe(
+      return this.http.post(`${this.url}/user/register`, credentials).pipe(
         catchError(e => {
           this.showAlert(e.error.msg);
           throw new Error(e);
@@ -51,7 +51,7 @@ export class AuthService {
     }
 
     login(credentials){
-      return this.http.post(`${this.url}/api/login`, credentials)
+      return this.http.post(`${this.url}/user/login`, credentials)
       .pipe(
         tap(res => {
           this.storage.set(TOKEN_KEY, res['token']);
@@ -77,7 +77,7 @@ export class AuthService {
           let status = e.status;
           if(status === 401){
             this.showAlert('You are not authorized for this!');
-            this.authenticationState.next(false);
+            this.logout();
           }
           throw new Error(e);
         })
