@@ -12,7 +12,7 @@ const User = require("../User");
  */
 
 router.post(
-    "/register",
+    "/signUp",
     [
         check("username", "Please Enter a Valid Username")
         .not()
@@ -21,7 +21,7 @@ router.post(
         check("password", "Please enter a valid password").isLength({
             min: 6
         }),
-        check("confirmpassword", "Please enter a valid password").isLength({
+        check("confirmPassword", "Please enter a valid password").isLength({
             min: 6
         })
     ],
@@ -37,7 +37,7 @@ router.post(
             username,
             email,
             password,
-            confirmpassword
+            confirmPassword
         } = req.body;
         try {
             let user = await User.findOne({
@@ -50,7 +50,7 @@ router.post(
             }
 
             const pass1 = Buffer.from(password);
-            const confirmPass = Buffer.from(confirmpassword);
+            const confirmPass = Buffer.from(confirmPassword);
 
             console.log(pass1)
             console.log(confirmPass)
@@ -64,7 +64,7 @@ router.post(
                 username,
                 email,
                 password,
-                confirmpassword
+                confirmPassword
             });
 
             // const salt = await bcrypt.genSalt(10);
@@ -101,7 +101,7 @@ router.post(
 module.exports = router;
 
 router.post(
-    "/login",
+    "/signIn",
     [
       check("email", "Please enter a valid email").isEmail(),
       check("password", "Please enter a valid password").isLength({
