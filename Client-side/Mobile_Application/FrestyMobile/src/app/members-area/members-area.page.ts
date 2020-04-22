@@ -21,7 +21,7 @@ export class MembersAreaPage implements OnInit {
  
   loadSpecialInfo() {
     this.authService.getSpecialData().subscribe(res => {
-      this.data = res['msg'];
+      this.data = res['message'];
     });
   }
  

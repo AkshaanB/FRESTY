@@ -21,7 +21,7 @@ export class SigninPage implements OnInit {
   }
 
   onSubmit(){
-    this.authService.login(this.credentialsForm.value).subscribe();
+    this.authService.signIn(this.credentialsForm.value).subscribe();
   }
 
   
