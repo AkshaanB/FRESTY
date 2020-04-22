@@ -2,6 +2,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const user = require("./routes/user"); //new addition
+var cors = require("cors");
 
 
 // Initiate Mongo Server
@@ -15,11 +16,14 @@ db.once('open', function(callback){
 
 
 const app = express();
+app.use(cors());
 
 // PORT
 const PORT = process.env.PORT || 5000;
 
+
 // Middleware
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {

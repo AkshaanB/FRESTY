@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 // Initiate Mongo Server
 const mongoose = require('mongoose'); 
-mongoose.connect('mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/images'); 
+mongoose.connect('mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email); 
 var db=mongoose.connection; 
 db.on('error', console.log.bind(console, "connection error")); 
 db.once('open', function(callback){ 

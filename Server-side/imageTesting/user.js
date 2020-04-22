@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 
 app.use(express.json());
 app.set("view engine", "ejs");
 
+
 app.get("/", (req, res) => {
-    res.render("index")
+    res.render("index");
    });
 
 const port = 5001;
@@ -19,6 +21,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage");
+app.use(bodyParser.json());
 
 // DB
 const mongoURI = "mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/images";
@@ -64,9 +67,11 @@ const storage = new GridFsStorage({
 
 
 
-
 app.post("/upload",upload.single("file"), (req, res) => {
     res.redirect("/")
+    const {email} = req.body;
+    console.log(email);
+    console.log("saved")
   });
 
 
