@@ -6,6 +6,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
 import { tap, catchError } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 const TOKEN_KEY = 'access_token';   //where the token will be saved 
 
@@ -18,7 +19,7 @@ export class AuthService {
   user = null;
   authenticationState = new BehaviorSubject(false);
 
-  constructor(private http: HttpClient, private helper: JwtHelperService, private storage: Storage,
+  constructor(private http: HttpClient, private helper: JwtHelperService,private router: Router, private storage: Storage,
     private plt: Platform, private alertController: AlertController) { 
       this.plt.ready().then(() => {
         this.checkToken();
@@ -41,17 +42,17 @@ export class AuthService {
       });
     }
 
-    register(credentials){
-      return this.http.post(`${this.url}/api/register`, credentials).pipe(
+    signUp(credentials){
+      return this.http.post(`${this.url}/user/signUp`, credentials).pipe(
         catchError(e => {
-          this.showAlert(e.error.msg);
+          this.showAlert(e.error.message);
           throw new Error(e);
         })
       );
     }
 
-    login(credentials){
-      return this.http.post(`${this.url}/api/login`, credentials)
+    signIn(credentials){
+      return this.http.post(`${this.url}/user/signIn`, credentials)
       .pipe(
         tap(res => {
           this.storage.set(TOKEN_KEY, res['token']);
@@ -59,7 +60,7 @@ export class AuthService {
           this.authenticationState.next(true);
         }),
         catchError(e => {
-          this.showAlert(e.error.msg);
+          this.showAlert(e.error.message);
           throw new Error(e);
         })
       );
@@ -68,6 +69,7 @@ export class AuthService {
     logout(){
       this.storage.remove(TOKEN_KEY).then(() => {
         this.authenticationState.next(false);
+        this.router.navigate(['signin']);
       });
     }
 
@@ -77,7 +79,7 @@ export class AuthService {
           let status = e.status;
           if(status === 401){
             this.showAlert('You are not authorized for this!');
-            this.authenticationState.next(false);
+            this.logout();
           }
           throw new Error(e);
         })
@@ -88,10 +90,10 @@ export class AuthService {
       return this.authenticationState.value;
     }
 
-    showAlert(msg){
+    showAlert(message){
       let alert = this.alertController.create({
-        message: msg,
-        header: 'Error',
+        message: message,
+        header: 'Message From Fresty',
         buttons: ['OK']
       });
       alert.then(alert => alert.present());

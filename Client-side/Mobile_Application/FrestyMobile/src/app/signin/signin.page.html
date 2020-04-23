@@ -6,13 +6,13 @@
     <p>Sign in to your account</p>
 
     <ion-item color="dark">
-    <ion-icon name="person"></ion-icon>&nbsp;&nbsp;<ion-input type="text" formControlName="username" placeholder="Username" credentialsForm ></ion-input>
+    <ion-icon name="person"></ion-icon>&nbsp;&nbsp;<ion-input type="text" formControlName="email" placeholder="Email"  ></ion-input>
     </ion-item>
 
     <br>
 
     <ion-item color="dark">
-      <ion-icon name="lock-closed"></ion-icon>&nbsp;&nbsp;<ion-input type="password" formControlName="password" placeholder="Password" credentialsForm ></ion-input>
+      <ion-icon name="lock-closed"></ion-icon>&nbsp;&nbsp;<ion-input type="password" formControlName="password" placeholder="Password" ></ion-input>
     </ion-item><br>
 
     <ion-button class="signinbutton" fill="clear" type="submit" [disabled]="!credentialsForm.valid" >Sign in</ion-button>

@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
+
 export function jwtOptionsFacgtory(storage){
   return{
     tokenGetter: () => {
@@ -32,7 +33,7 @@ export function jwtOptionsFacgtory(storage){
     jwtOptionsProvider: {
       provide: JWT_OPTIONS,
       useFactory: jwtOptionsFacgtory,
-      deps: [Storage]
+      deps: [Storage]  //dependencies
     }
   })
 ],
