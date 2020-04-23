@@ -1,9 +1,14 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
+var mongoURI="mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/images";
 
 app.use(express.json());
 app.set("view engine", "ejs");
+
+
 
 
 app.get("/", (req, res) => {
@@ -21,10 +26,19 @@ const path = require("path");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const GridFsStorage = require("multer-gridfs-storage");
-app.use(bodyParser.json());
 
+// var sender = function(req,res,next){
+   
+//    next();
+// }
+
+// app.use(sender);
 // DB
-const mongoURI = "mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/images";
+// app.post("/upload", (req, res) => {
+//   const {email} = req.body;
+//   mongoURI = "mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/"+email;
+//   console.log("done");
+//  });
 
 // connection
 const conn = mongoose.createConnection(mongoURI, {
@@ -67,12 +81,10 @@ const storage = new GridFsStorage({
 
 
 
-app.post("/upload",upload.single("file"), (req, res) => {
-    res.redirect("/")
-    const {email} = req.body;
-    console.log(email);
-    console.log("saved")
-  });
+
+app.post("/upload",upload.single('file'), (req, res) => {
+    res.redirect("/");
+});
 
 
   // app.get("/image/:filename", (req, res) => {
