@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { GoogleLoginPageRoutingModule } from './google-login-routing.module';
+import { MembersAreaPageRoutingModule } from './members-area-routing.module';
 
-import { GoogleLoginPage } from './google-login.page';
+import { MembersAreaPage } from './members-area.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    GoogleLoginPageRoutingModule
+    MembersAreaPageRoutingModule
   ],
-  declarations: [GoogleLoginPage]
+  declarations: [MembersAreaPage]
 })
-export class GoogleLoginPageModule {}
+export class MembersAreaPageModule {}

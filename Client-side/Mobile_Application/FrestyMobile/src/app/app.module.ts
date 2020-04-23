@@ -8,11 +8,19 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { Camera } from '@ionic-native/camera/ngx';
+
 
 import { HttpClientModule } from '@angular/common/http';
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+
+import { Camera } from '@ionic-native/camera/ngx';
+import { File } from '@ionic-native/File/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+
+ 
+
+
 
 export function jwtOptionsFacgtory(storage){
   return{
@@ -32,13 +40,16 @@ export function jwtOptionsFacgtory(storage){
     jwtOptionsProvider: {
       provide: JWT_OPTIONS,
       useFactory: jwtOptionsFacgtory,
-      deps: [Storage]
+      deps: [Storage]  //dependencies
     }
   })
 ],
   providers: [
     StatusBar,
-    SplashScreen,Camera,
+    SplashScreen,
+    File,
+    Camera,
+    WebView,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
