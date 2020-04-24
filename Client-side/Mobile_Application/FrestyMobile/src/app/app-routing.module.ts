@@ -16,8 +16,8 @@ const routes: Routes = [
   },
   {
     path: 'members-area',
-    loadChildren: () => import('./members-area/members-area.module').then( m => m.MembersAreaPageModule),
-    canActivate: [AuthGuardService]
+    loadChildren: () => import('./members-area/members-area.module').then( m => m.MembersAreaPageModule)
+    //canActivate: [AuthGuardService]
   },
 ];
 
