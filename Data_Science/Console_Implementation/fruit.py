@@ -6,12 +6,18 @@ import cvlib as cv
 from cvlib.object_detection import draw_bbox
 import numpy as np
 import os
+import db
 
 app = Flask(__name__)
 
 @app.route("/")
 def home():
     return "Hello, Flask!"
+
+@app.route("/test", methods=['GET', 'POST'])
+def test():
+    db.db.test_collection.insert_one({"name": "Akshaan"})
+    return jsonify({"Results: ": "Connected to the data base!"})
 
 # @app.route("/predict",methods=['POST','GET'])
 # def predict():
