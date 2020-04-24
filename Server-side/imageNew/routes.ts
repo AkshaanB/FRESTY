@@ -23,6 +23,7 @@ app.post('/images', upload.single('image'), (req, res, next) => {
     let newImage = new Image();
     newImage.filename = req.file.filename;
     newImage.originalName = req.file.originalname;
+    newImage.email = req.body.email;
     newImage.desc = req.body.desc
     newImage.save(err => {
         if (err) {
@@ -32,8 +33,9 @@ app.post('/images', upload.single('image'), (req, res, next) => {
     });
 });
  
-// Get all uploaded images
-app.get('/images', (req, res, next) => {
+
+
+app.get('/image', (req, res, next) => {
     const {email} = req.query;
     let uri = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email;
     mongoose.connect(uri, (err) => {
@@ -45,34 +47,22 @@ app.get('/images', (req, res, next) => {
     });
     console.log(email);
 
-    // use lean() to get a plain JS object
-    // remove the version key from the response
+
     Image.find({}, '-__v').lean().exec((err, images) => {
         if (err) {
             res.sendStatus(400);
         }
  
         // Manually set the correct URL to each image
-        for (let i = 0; i < images.length; i++) {
-            var img = images[i];
-            img.url = req.protocol + '://' + req.get('host') + '/images/' + img._id;
-            console.log(req.protocol);
-        }
-        res.json(images);
+        
+            var img = images[images.length-1];
+            Image.findById(img._id, (err, image) => {
+                // stream the image back by loading the file
+                res.setHeader('Content-Type', 'image/jpeg');
+                fs.createReadStream(path.join(UPLOAD_PATH, image.filename)).pipe(res);
+            });
     })
-});
-
-app.get('/images/:id', (req, res, next) => {
-    let imgId = req.params.id;
- 
-    Image.findById(imgId, (err, image) => {
-        if (err) {
-            res.sendStatus(400);
-        }
-        // stream the image back by loading the file
-        res.setHeader('Content-Type', 'image/jpeg');
-        fs.createReadStream(path.join(UPLOAD_PATH, image.filename)).pipe(res);
-    })
+    //let imgId = req.params.id;
 });
 
 
@@ -105,6 +95,8 @@ app.post('/predictedImages', upload.single('image'), (req, res, next) => {
     });
 });
 
+
+
 app.get('/predictedImages', (req, res, next) => {
     const {email} = req.query;
     let uri = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email;
@@ -117,27 +109,11 @@ app.get('/predictedImages', (req, res, next) => {
     });
     console.log(email);
 
-    // use lean() to get a plain JS object
-    // remove the version key from the response
-    predictedImage.find({}, '-__v').lean().exec((err, predictedimages) => {
-        if (err) {
-            res.sendStatus(400);
-        }
- 
-        // Manually set the correct URL to each image
-        for (let i = 0; i < predictedimages.length; i++) {
-            var img = predictedimages[i];
-            img.url = req.protocol + '://' + req.get('host') + '/predictedImages/' + img._id;
-            console.log(req.protocol);
-        }
-        res.json(predictedimages);
-    })
-});
-
-app.get('/predictedImages/:id', (req, res, next) => {
-    let imgId = req.params.id;
- 
-    predictedImage.findById(imgId, (err, image) => {
+   // let imgId = req.params.id;
+   predictedImage.find({}, '-__v').lean().exec((err, predictedimages) => {
+           
+    var img = predictedimages[predictedimages.length-1];
+    predictedImage.findById(img._id, (err, image) => {
         if (err) {
             res.sendStatus(400);
         }
@@ -145,4 +121,6 @@ app.get('/predictedImages/:id', (req, res, next) => {
         res.setHeader('Content-Type', 'image/jpeg');
         fs.createReadStream(path.join(UPLOAD_PATH, image.filename)).pipe(res);
     })
+    });
 });
+
