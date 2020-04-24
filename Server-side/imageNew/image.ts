@@ -6,12 +6,14 @@ export interface IImageModel extends mongoose.Document {
     originalName: string; 
     desc: string;
     created: Date;
+    email: string;
   };
  
   // Actual DB model
 export var imageSchema = new mongoose.Schema({
     filename: String,
     originalName: String,
+    email: String,
     desc: String,
     created: { type: Date, default: Date.now }
 });
