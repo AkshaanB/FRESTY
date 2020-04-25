@@ -27,6 +27,8 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
+
+
       this.auth.authenticationState.subscribe(userState => {
         if(userState){
           this.router.navigate(['account']); //if the user is a memeber the user can access the page 
@@ -36,4 +38,6 @@ export class AppComponent {
       })
     });
   }
+
+  
 }
