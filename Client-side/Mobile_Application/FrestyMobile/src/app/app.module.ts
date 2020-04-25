@@ -5,53 +5,44 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { FormsModule } from '@angular/forms';
+
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
-
-import { HttpClientModule } from '@angular/common/http';
+//for signin,signup,authentication
+import { HttpClientModule } from '@angular/common/http'; //for http requests
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
-import { Camera } from '@ionic-native/camera/ngx';
-import { File } from '@ionic-native/File/ngx';
-import { WebView } from '@ionic-native/ionic-webview/ngx';
-
- 
-
-
-
-export function jwtOptionsFacgtory(storage){
-  return{
-    tokenGetter: () => {
-      return storage.get('access_token');
+export function jwtOptions(storage) {
+  return {
+    tokenReciver: () => {
+      return storage.get('get_token');
     },
-    whitelistedDomains: ['localhost:5000']
+    whitelistedDomains: ['localhost:5000'] //where the nodejs api running
   }
 }
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule,HttpClientModule,
-  IonicStorageModule.forRoot(),
-  JwtModule.forRoot({
-    jwtOptionsProvider: {
-      provide: JWT_OPTIONS,
-      useFactory: jwtOptionsFacgtory,
-      deps: [Storage]  //dependencies
-    }
-  })
-],
+  imports: [BrowserModule, IonicModule.forRoot(),
+    AppRoutingModule,
+    HttpClientModule,
+    IonicStorageModule.forRoot(),
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,         //imported jwt options
+        useFactory: jwtOptions,
+        deps: [Storage] //dependence for the imported storage
+      }
+    })
+  ],
   providers: [
     StatusBar,
     SplashScreen,
-    File,
-    Camera,
-    WebView,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
