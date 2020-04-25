@@ -1,6 +1,7 @@
 {
-  "name": "FrestyMobile",
+  "name": "Fresty",
   "integrations": {
+    "capacitor": {},
     "cordova": {}
   },
   "type": "angular"
