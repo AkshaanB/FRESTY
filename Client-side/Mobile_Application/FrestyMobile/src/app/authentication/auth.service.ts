@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 //imports for authentication
-import { tap, catchError } from 'rxjs/operators';
+
 import { environment } from '../../environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Storage } from '@ionic/storage';
@@ -9,7 +9,7 @@ import { Platform, AlertController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http'; 
 import { Router } from '@angular/router';
-
+import { tap, catchError } from 'rxjs/operators';
 const JWT_TOKEN = 'get_token';   //where the token will be saved 
 
 
@@ -22,8 +22,12 @@ export class AuthService {
   user = null;
   authenticationState = new BehaviorSubject(false); //to check the authentication state 
 
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService, private storage: Storage,
-    private platform: Platform, private alertController: AlertController, private router: Router) { 
+  constructor(private http: HttpClient, 
+    private jwtHelper: JwtHelperService, 
+    private storage: Storage,
+    private platform: Platform, 
+    private alertController: AlertController,
+     private router: Router) { 
 
       this.platform.ready().then(() => {
         this.tokenCheck();      //to check if the token is saved previously
@@ -55,7 +59,7 @@ export class AuthService {
           this.authenticationState.next(true);  //to set the authentication state to true 
         }),
         catchError(e => {
-          this.alertMessage(e.error.message);  //to show the alert box
+          this.showErrorMessage(e.error.message);  //to show the alert box
           throw new Error(e);
         })
       );
@@ -64,19 +68,10 @@ export class AuthService {
     signUp(details){     //signup method for http post request 
       return this.http.post(`${this.url}/user/signUp`, details).pipe(
         catchError(e => {
-          this.alertMessage(e.error.message); //to show the alert box 
+          this.showErrorMessage(e.error.message); //to show the alert box 
           throw new Error(e);
         })
       );
-    }
-
-    alertMessage(message){
-      let alert = this.alertController.create({
-        message: message,
-        header: 'Message From Fresty',
-        buttons: ['OK']
-      });
-      alert.then(alert => alert.present());  //new syntax to show alert message 
     }
 
     logout(){
@@ -89,5 +84,17 @@ export class AuthService {
     isAuthenticated(){
       return this.authenticationState.value; //for authGuard check
     }
+
+    showErrorMessage(message){
+      let alert = this.alertController.create({
+        message: message,
+        header: 'Message from Fresty',
+        buttons: ['OK']
+      });
+      alert.then(alert => alert.present());
+    }
+    
+
+    
 
 }
