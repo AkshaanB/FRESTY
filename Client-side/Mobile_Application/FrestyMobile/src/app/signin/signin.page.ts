@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../authentication/auth.service';
 
 @Component({
   selector: 'app-signin',
@@ -9,21 +9,19 @@ import { AuthService } from '../services/auth.service';
 })
 export class SigninPage implements OnInit {
 
-  credentialsForm: FormGroup;
+  userDetailsForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
 
   ngOnInit() {
-    this.credentialsForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],     //user name is required 
+    this.userDetailsForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],     //user email is required 
       password: ['', [Validators.required, Validators.minLength(6)]]   //password is required with a minimum length of 6 characters
     });
   }
 
   onSubmit(){
-    this.authService.signIn(this.credentialsForm.value).subscribe();
+    this.authService.signIn(this.userDetailsForm.value).subscribe(); 
   }
-
-  
 
 }

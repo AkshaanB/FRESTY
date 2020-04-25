@@ -1,6 +1,6 @@
 <ion-content >
   
-  <form [formGroup]="credentialsForm" (ngSubmit)="onSubmit()" >
+  <form [formGroup]="userDetailsForm" (ngSubmit)="onSubmit()" > 
   <div class="box1">
     <h1>Welcome To Fresty</h1>
     <p>Sign in to your account</p>
@@ -15,7 +15,7 @@
       <ion-icon name="lock-closed"></ion-icon>&nbsp;&nbsp;<ion-input type="password" formControlName="password" placeholder="Password" ></ion-input>
     </ion-item><br>
 
-    <ion-button class="signinbutton" fill="clear" type="submit" [disabled]="!credentialsForm.valid" >Sign in</ion-button>
+    <ion-button class="signinbutton" fill="clear" type="submit" [disabled]="!userDetailsForm.valid" >Sign in</ion-button>
   </div>
 
   <div class="box2">

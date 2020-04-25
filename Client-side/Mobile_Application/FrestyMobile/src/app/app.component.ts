@@ -3,12 +3,8 @@ import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './authentication/auth.service';
 import { Router } from '@angular/router';
-
-
-
-
 
 @Component({
   selector: 'app-root',
@@ -20,7 +16,7 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private auth: AuthService,
+    private auth: AuthService,   //for subscribe purposes
     private router: Router
   ) {
     this.initializeApp();
@@ -31,14 +27,13 @@ export class AppComponent {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
 
-      this.auth.authenticationState.subscribe(state =>{
-        if(state){
-          this.router.navigate(['members-area']);
+      this.auth.authenticationState.subscribe(userState => {
+        if(userState){
+          this.router.navigate(['account']); //if the user is a memeber the user can access the page 
         }else{
-          //if it is false 
+          
         }
-      });
-
+      })
     });
   }
 }
