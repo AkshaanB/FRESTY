@@ -16,7 +16,7 @@ import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
 export function jwtOptions(storage) {
   return {
-    tokenReciver: () => {
+    tokenGetter: () => {
       return storage.get('get_token');
     },
     whitelistedDomains: ['localhost:5000'] //where the nodejs api running
