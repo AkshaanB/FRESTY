@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../authentication/auth.service';
 
+//for network
+import { Network } from '@ionic-native/network/ngx';
 
+//for dialogs
+import { Dialogs } from '@ionic-native/dialogs/ngx';
 
 @Component({
   selector: 'app-signin',
@@ -13,7 +17,17 @@ export class SigninPage implements OnInit {
 
   userDetailsForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService) { }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService,public network: Network,public dialog:Dialogs)
+   { 
+     this.network.onDisconnect().subscribe(() =>{
+       this.dialog.alert("Data connection is blocked");   //to check the network status 
+     });
+     this.network.onConnect().subscribe(() =>{
+       setTimeout(() =>{
+         this.dialog.alert("Data connection is allowed");
+       },2000);
+     });
+   }
 
   ngOnInit() {
     this.userDetailsForm = this.formBuilder.group({

@@ -14,6 +14,15 @@ import { HttpClientModule } from '@angular/common/http'; //for http requests
 import { Storage, IonicStorageModule } from '@ionic/storage';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 
+//For camera 
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+
+//for network
+import { Network } from '@ionic-native/network/ngx';
+
+//for dialogs
+import { Dialogs } from '@ionic-native/dialogs/ngx';
+
 export function jwtOptions(storage) {
   return {
     tokenGetter: () => {
@@ -41,6 +50,9 @@ export function jwtOptions(storage) {
   providers: [
     StatusBar,
     SplashScreen,
+    Camera,
+    Network,
+    Dialogs,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
