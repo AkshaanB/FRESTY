@@ -5,6 +5,7 @@ export interface IImageModel extends mongoose.Document {
     filename: string; 
     originalName: string; 
     results: string;
+    count: string;
     created: Date;
   };
  
@@ -13,6 +14,7 @@ export var imageSchema = new mongoose.Schema({
     filename: String,
     originalName: String,
     results: String,
+    count: String,
     created: { type: Date, default: Date.now }
 });
  
