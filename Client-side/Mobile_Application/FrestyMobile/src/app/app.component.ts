@@ -6,8 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AuthService } from './authentication/auth.service';
 import { Router } from '@angular/router';
 
-//for dialogs
-import { Dialogs } from '@ionic-native/dialogs/ngx';
+
 
 @Component({
   selector: 'app-root',
@@ -20,8 +19,7 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private auth: AuthService,   //for subscribe purposes
-    private router: Router,
-    public dialog: Dialogs
+    private router: Router
   ) {
     this.initializeApp();
   }
@@ -35,7 +33,7 @@ export class AppComponent {
         if(userState){
           this.router.navigate(['account']); //if the user is a memeber the user can access the page 
         }else{
-          this.dialog.alert("Please signin to continue");
+          console.log("Please signin to access"); // to display a message in the console 
         }
       })
     });
