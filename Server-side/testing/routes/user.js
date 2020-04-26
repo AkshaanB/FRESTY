@@ -4,15 +4,16 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const User = require("../User");
-
+const mongoose = require('mongoose'); 
 /**
  * @method - POST
  * @param - /signup
  * @description - User SignUp
  */
+var ok;
 
 router.post(
-    "/signUp",
+    "/register",
     [
         check("username", "Please Enter a Valid Username")
         .not()
@@ -21,7 +22,7 @@ router.post(
         check("password", "Please enter a valid password").isLength({
             min: 6
         }),
-        check("confirmPassword", "Please enter a valid password").isLength({
+        check("confirmpassword", "Please enter a valid password").isLength({
             min: 6
         })
     ],
@@ -37,7 +38,7 @@ router.post(
             username,
             email,
             password,
-            confirmPassword
+            confirmpassword
         } = req.body;
         try {
             let user = await User.findOne({
@@ -50,7 +51,7 @@ router.post(
             }
 
             const pass1 = Buffer.from(password);
-            const confirmPass = Buffer.from(confirmPassword);
+            const confirmPass = Buffer.from(confirmpassword);
 
             console.log(pass1)
             console.log(confirmPass)
@@ -64,13 +65,22 @@ router.post(
                 username,
                 email,
                 password,
-                confirmPassword
+                confirmpassword
             });
+            
+            
 
+            // mongoose.connect('mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/accounts'); 
+            // var db=mongoose.connection; 
+            // db.on('error', console.log.bind(console, "connection error")); 
+            // db.once('open', function(callback){ 
+            // console.log("connection succeeded"); 
+            // })
             // const salt = await bcrypt.genSalt(10);
             // user.password = await bcrypt.hash(password, salt);
  
             sender(email,username);
+            
             await user.save();
 
             const payload = {
@@ -91,6 +101,7 @@ router.post(
                     });
                 }
             );
+              
         } catch (err) {
             console.log(err.message);
             res.status(500).send("Error in Saving");
@@ -101,7 +112,7 @@ router.post(
 module.exports = router;
 
 router.post(
-    "/signIn",
+    "/login",
     [
       check("email", "Please enter a valid email").isEmail(),
       check("password", "Please enter a valid password").isLength({
@@ -165,10 +176,12 @@ router.post(
     }
   );
   
+  
   sender = function(email,name){
       
     var nodemailer = require('nodemailer');
 
+    //var rand,mailOptions,host,link;
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -177,25 +190,29 @@ router.post(
         }
     });
 
-    var nameText = "Under the Name of Mr/Mrs."+name;
+    
+
+    var nameText = "Welcome Mr/Mrs."+name;
     var mailOptions = {
         from: 'fresty.qualitygrading@gmail.com',
         to: email,
         subject: 'Confirmation',
         text: "Account has been created succesfully! "+nameText
     };
+  
     transporter.sendMail(mailOptions, function (error, info) {
         if (error) {
             console.log(error);
         }
         else {
             console.log('Email sent: ' + info.response);
+            
         }
     });
         console.log("Record inserted Successfully"); 
         
+        
     }; 
           
     //return res.sendFile(__dirname+'/signup_success.html'); 
-
   

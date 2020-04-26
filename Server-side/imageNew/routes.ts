@@ -85,7 +85,8 @@ app.post('/predictedImages', upload.single('image'), (req, res, next) => {
     let Image = new predictedImage();
     Image.originalName = req.file.originalname;
     Image.filename = req.file.filename;
-    Image.results = req.body.results
+    Image.results = req.body.results;
+    Image.count = req.body.count;
     Image.save(err => {
         if (err) {
             return res.sendStatus(400);
@@ -137,8 +138,8 @@ app.post('/predictedImages', upload.single('image'), (req, res, next) => {
 // Get all uploaded images
 app.get('/predictedImages', (req, res, next) => {
     const {email} = req.query;
-    let uri = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email;
-    mongoose.connect(uri, (err) => {
+    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email;
+    mongoose.connect(url, (err) => {
         if (err) {
             console.log(err);
         } else {
