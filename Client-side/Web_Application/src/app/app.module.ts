@@ -1,14 +1,16 @@
+import { MyserviceService } from './myservice.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-// import {HttpClientModule} from '@angular/common/http';
-// import {DataserviceService} from '../app/dataservice.service';
 import { GetStartedComponent } from './get-started/get-started.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { ViewHistoryComponent } from './view-history/view-history.component';
 import { ProductsComponent } from './products/products.component';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -22,12 +24,14 @@ import { ProductsComponent } from './products/products.component';
 
   imports: [
     BrowserModule,
-    AppRoutingModule,    
-    // HttpClientModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
+    
   ],
 
-  providers:[],
-  // providers: [DataserviceService],
+  providers:[ MyserviceService],
   bootstrap: [AppComponent]
 })
 
