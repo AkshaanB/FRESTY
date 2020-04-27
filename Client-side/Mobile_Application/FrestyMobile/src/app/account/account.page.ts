@@ -15,8 +15,9 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./account.page.scss'],
 })
 export class AccountPage implements OnInit {
-  
-  image: any;   //for image
+
+  capturedImage: string;  //for camera image
+  image: any;   //for gallery image
 
   options: CameraOptions = {
     quality: 30,
@@ -40,13 +41,15 @@ export class AccountPage implements OnInit {
     this.image = event.target.files[0];
   }
 
+
+
   async selectImage() {
     const actionSheet = await this.actionSheetController.create({
       header: "Select Image source",
       buttons: [{
         text: 'Send from Gallery',
-        handler: () => {
-          const formData = new FormData();
+        handler: () => {                      //for retrive images from the phone gallery
+          const formData = new FormData();   
           formData.append('image', this.image);   //to add images to the image file 
           this.http.post('http://localhost:3200/images', formData).subscribe((response: any) => {
             console.log(response);
@@ -54,9 +57,14 @@ export class AccountPage implements OnInit {
         }
       },
       {
-        text: 'Scan from Camera',
-        handler: () => {
-          this.takePicture(this.camera.PictureSourceType.CAMERA);
+        text: 'Scan from Camera',  
+        handler: () => {           //for native camera
+          this.camera.getPicture(this.options).then((imageData) => {
+            let base64Image = 'data:image/jpeg;base64,' + imageData;
+            this.capturedImage = base64Image;
+          }, (err) => {
+            console.log(err);
+          });
         }
       },
       {
@@ -66,15 +74,6 @@ export class AccountPage implements OnInit {
       ]
     });
     await actionSheet.present();
-  }
-
-  takePicture(sourceType: PictureSourceType) {
-    const options: CameraOptions = {
-      quality: 100,
-      destinationType: this.camera.DestinationType.FILE_URI,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE
-    };
   }
 
   logout() {

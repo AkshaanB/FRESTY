@@ -51,7 +51,7 @@ export class AuthService {
     }
 
     signIn(details){  //signin method for http post request 
-      return this.http.post(`${this.url}/user/signIn`, details)
+      return this.http.post(`${this.url}/user/login`, details)
       .pipe(
         tap(res => {   //something similar to mapping 
           this.storage.set(JWT_TOKEN, res['token']); //to set the token for the storage 
@@ -66,7 +66,7 @@ export class AuthService {
     }
 
     signUp(details){     //signup method for http post request 
-      return this.http.post(`${this.url}/user/signUp`, details).pipe(
+      return this.http.post(`${this.url}/user/register`, details).pipe(
         catchError(e => {
           this.showErrorMessage(e.error.message); //to show the alert box 
           throw new Error(e);
