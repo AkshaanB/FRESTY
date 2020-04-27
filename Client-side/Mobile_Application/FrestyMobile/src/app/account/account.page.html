@@ -1,16 +1,21 @@
 <ion-content >
+  <ion-button type="button" fill="clear" class="logoutbutton" (click)="logout()"> <ion-icon name="log-out-outline" ></ion-icon></ion-button>
+
   <h1 color="light" style="text-align: center;">Welcome To Fresty</h1>
   <p style="text-align: center;">Fresh Fruits and Vegetables Detector</p> <br><br>
-
-  <div class="ion-padding">
-    <input type="file" name="image" accept="image/*" (change)="selecteFromGallery($event)">
-  </div>
-
-  <ion-button expand="full" (click)="logout()">Logout</ion-button>
+  <p style="text-align: center;">
+    Select an image from your device or 
+    capture an image from your device camera 
+  </p>
+  <ion-input class="imageSelector" type="file" name="image" accept="image/*" (change)="selecteFromGallery($event)"></ion-input>
+  
+ 
+  
+  
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar color="primary">
+<ion-footer >
+  <ion-toolbar color="dark">
     <ion-button fill="clear" expand="full" color="light" (click)="selectImage()">
       <ion-icon slot="start" name="camera"></ion-icon>
       Send Image</ion-button>
