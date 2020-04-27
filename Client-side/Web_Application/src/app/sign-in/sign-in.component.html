@@ -7,7 +7,7 @@
 
 <div class="w3-top">
   <div class="w3-bar" id="myNavbar">
-    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-left" href="javascript:void(0);" onclick="toggleFunction()" title="Toggle Navigation Menu">
+    <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-left">
       <i class="fa fa-bars"></i>
     </a>
     <a href="http://localhost:4200/getstarted" class="w3-bar-item w3-button"><i class="fa fa-home"></i> HOME</a>
@@ -23,33 +23,33 @@
             <img src="https://3.bp.blogspot.com/-bRIrBq-ItFQ/XnW2E1FIZrI/AAAAAAAAANc/1CRnHDQslvIq983omtuvYm4R7pfmf8Z4wCK4BGAYYCw/s320/signin.jpg">
         </div>
         <div class="login-container">
-            <form action="sign-in.component.html">
+
+            <form action="sign-in.component.html" [formGroup] = "loginForm">
                 <img class="avatar" src="https://3.bp.blogspot.com/-Oim9AF6Czl8/XnW4czKg4pI/AAAAAAAAAOo/R3nC2AJyw683qkjW-NC5HKWEI_mLzscdwCK4BGAYYCw/s320/avatar.jpg">
                 <h2>Welcome</h2><br>
                 
                 <div class="input-div one focus">
-                    <div class="i">
-                            <!-- <i class="fas fa-user"></i> -->
-                    </div>
+                    <div class="i"><i class="fa fa-id-badge"></i></div>
                     <div>
-                        <h5>User name</h5>
-                        <input class="input" placeholder="Username" type="text">
+                        <input class="input" formControlName="email" placeholder="Username" type="text">
+                        <span *ngIf="isValid('email')" style="color:red"><b>Entered username is invalid</b></span>
                     </div>
-                </div>
+                </div> 
                 
                  <div class="input-div two focus">
-                    <div class="i">
-                        <!-- <i class="fas fa-lock"></i> -->
-                    </div>
+                    <div class="i"><i class="fa fa-lock"></i></div>
                     <div>
-                        <h5>Password</h5>
-                        <input class="input" placeholder="Password" type="password">
+                        <input class="input" formControlName="password" placeholder="Password" type="password">
+                        <span *ngIf="isValid('password')" style="color:red"><b>Password cannot be blank</b></span>
                     </div>
                 </div>
 
-                <a href="#"><b>Forgot Password?</b></a><br>
-                <input type="submit" class="btn" value="Login">
+                <br><br>
+                <button class="btn" input type="submit" (click)="login()"><b>Sign in</b></button>
 
+                <div style="text-align:center;">
+                    {{successMessage}}
+                </div>
             </form>
         </div>
     </div>
