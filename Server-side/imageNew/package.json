@@ -1,9 +1,8 @@
 {
-  "name": "image-upload",
+  "name": "imageUpload",
   "version": "1.0.0",
   "description": "A simple NodeJS server for image upload",
   "scripts": {
-    "prestart": "tsc",
     "start": "node dist/server.js"
   },
   "author": "pravin",
