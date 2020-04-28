@@ -5,7 +5,8 @@ import * as mongoose from 'mongoose'
  
 // Generell properties
 export let UPLOAD_PATH = 'uploads'
-export let PORT = 3200;
+export let PORT = process.env.PORT || 8080;
+//let PORT = 3200;
  
 // Multer Settings for file upload
 var storage = multer.diskStorage({
