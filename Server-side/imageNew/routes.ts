@@ -5,12 +5,15 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as mongoose from 'mongoose';
 
+
+
+
  
 // Upload a new image with description
 app.post('/images', upload.single('image'), (req, res, next) => {
     // Create a new image model and fill the properties
-    const {email} = req.body;
-    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email;
+    //const {email} = req.body;
+    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/photos';
     mongoose.connect(url, (err) => {
         if (err) {
             console.log(err);
@@ -18,7 +21,7 @@ app.post('/images', upload.single('image'), (req, res, next) => {
             console.log('Connected to MongoDb');
         }
     });
-    console.log(email);
+    //console.log(email);
 
     let image = new Image();
     image.originalName = req.file.originalname;
@@ -35,8 +38,8 @@ app.post('/images', upload.single('image'), (req, res, next) => {
 
 
 app.get('/image', (req, res, next) => {
-    const {email} = req.query;
-    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email;
+    //const {email} = req.query;
+    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/photos';
     mongoose.connect(url, (err) => {
         if (err) {
             console.log(err);
@@ -44,7 +47,7 @@ app.get('/image', (req, res, next) => {
             console.log('Connected to MongoDb');
         }
     });
-    console.log(email);
+    //console.log(email);
 
 
     Image.find({}, '-__v').lean().exec((err, images) => {
@@ -71,7 +74,7 @@ app.get('/image', (req, res, next) => {
 app.post('/predictedImages', upload.single('image'), (req, res, next) => {
 
     const {email} = req.body;
-    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email;
+    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/predictedPhotos';
     mongoose.connect(url, (err) => {
         if (err) {
             console.log(err);
@@ -138,7 +141,7 @@ app.post('/predictedImages', upload.single('image'), (req, res, next) => {
 // Get all uploaded images
 app.get('/predictedImages', (req, res, next) => {
     const {email} = req.query;
-    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/'+email;
+    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/predictedPhotos';
     mongoose.connect(url, (err) => {
         if (err) {
             console.log(err);
@@ -150,17 +153,17 @@ app.get('/predictedImages', (req, res, next) => {
 
     // use lean() to get a plain JS object
     // remove the version key from the response
-    predictedImage.find({}, '-__v').lean().exec((err, images) => {
+    predictedImage.find({}, '-__v').lean().exec((err, predictedimages) => {
         if (err) {
             res.sendStatus(400);
         }
  
         // Manually set the correct URL to each image
-        for (let i = 0; i < images.length; i++) {
-            var img = images[i];
+        for (let i = 0; i < predictedimages.length; i++) {
+            var img = predictedimages[i];
             img.url = req.protocol + '://' + req.get('host') + '/images/' + img._id;
             console.log(req.protocol);
         }
-        res.json(images);
+        res.json(predictedimages);
     })
 });
