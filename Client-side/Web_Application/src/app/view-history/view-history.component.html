@@ -20,9 +20,8 @@
     <i class="fa fa-bars menu-toggle"></i>
     <ul class="nav">
         <li>
-            <a href="http://localhost:4200/getstarted/product/signin">
-                <i class="fa fa-user"></i>
-                Logout
+            <a class="logout" (click)="logout()">
+               <b> SIGN OUT</b>
             </a>
         </li>
     </ul>
@@ -34,78 +33,37 @@
             <main>
                 <div class="row contacts">
                     <div class="col invoice-to">
-                        <h2 class="to">Name: User name</h2>
-                        <div class="email">Mail: <a href="mailto:fresty@example.com">abc@example.com</a></div>
+                        <!-- <h2 class="invoice-id">User name: {{username}}</h2>  -->
                     </div>
                     <div class="col invoice-details">
-                        <h1 class="invoice-id">USER HISTORY</h1>
-                        <div class="date">Login Date: </div>
-                        <input type="date" id="logindate" name="logindate">
+                        <h1 class="invoice-id">USER HISTORY</h1> 
                     </div>
                 </div>
+
                 <table border="0" cellspacing="0" cellpadding="0">
-                    <thead>
+                    <thead></thead>
                         <tr>
-                            <th><b>#</b></th>
-                            <th class="text-left"><b>ITEMS</b></th>
-                            <th class="text-right"><b>QUALITY RESULT</b></th>
-                            <!-- <th class="text-right">COLOR EXTRACTION</th>
-                            <th class="text-right">SHAPE EXTRACTION</th> -->
+                            <th><b>DATE</b></th>
+                            <th class="text-center"><b>ITEMS</b></th>
+                            <th class="text-center"><b>QUALITY RESULT</b></th>
                         </tr>
-                    </thead>
+                    
                     <tbody>
-                        <tr>
-                            <td class="no">01</td>
-                            <td class="text-left"><h3>Tomato</h3></td>
-                            <td class="unit">Good or Bad</td>
-                            <!-- <td class="qty">30</td>
-                            <td class="total">10</td> -->
-                        </tr>
-                        <tr>
-                            <td class="no">02</td>
-                            <td class="text-left"><h3>Potato</h3></td>
-                            <td class="unit">Good or Bad</td>
-                            <!-- <td class="qty">30</td>
-                            <td class="total">10</td> -->
-                        </tr>
-                        <tr>
-                            <td class="no">03</td>
-                            <td class="text-left"><h3>Onion</h3></td>
-                            <td class="unit">Good or Bad</td>
-                            <!-- <td class="qty">80</td>
-                            <td class="total">50</td> -->
-                        </tr>
-                        <tr>
-                            <td class="no">04</td>
-                            <td class="text-left"><h3>Red Apple</h3></td>
-                            <td class="unit">Good or Bad</td>
-                            <!-- <td class="qty">20</td>
-                            <td class="total">10</td> -->
-                        </tr>
-                        <tr>
-                            <td class="no">05</td>
-                            <td class="text-left"><h3>Orange</h3></td>
-                            <td class="unit">Good or Bad</td>
-                            <!-- <td class="qty">20</td>
-                            <td class="total">40</td> -->
-                        </tr>
-                        <tr>
-                            <td class="no">06</td>
-                            <td class="text-left"><h3>Green Apple</h3></td>
-                            <td class="unit">Good or Bad</td>
-                            <!-- <td class="qty">20</td>
-                            <td class="total">10</td> -->
+                        <tr *ngFor="let history of allTheHistory">
+                            <td class="no">{{history.date}}</td>
+                            <td class="text-left">{{history.item}}</td>
+                            <td class="unit">{{history.qualityResult}}</td>
                         </tr>
                     </tbody>
-                   
                 </table><br>
+
                 <div class="notices">
-                    <div>NOTICE:</div>
-                    <div class="notice">The Dashboard will be updated each time when you login from your FRESTY mobile application.</div>
+                    <div>NOTICE :</div>
+                    <div class="notice">The Dashboard will provide you updates whenever you use FRESTY mobile application.</div>
                 </div>
             </main>
             <footer>
-                    Copyrights Reserved ©2020 FRESTY
+                <b>Copyrights All Reserved Â©2020 FRESTY</b>
             </footer>
         </div>
         <div></div>
