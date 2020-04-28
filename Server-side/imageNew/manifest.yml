@@ -1,0 +1,7 @@
+---
+applications:
+- name: imageUpload
+  memory: 256m
+  instances: 1
+  health-check-type: port
+  random-route: true
