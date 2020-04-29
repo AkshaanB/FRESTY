@@ -1,4 +1,5 @@
 import flask
+# import requests
 from flask import Flask, jsonify, request
 import tensorflow as tf
 import cv2
@@ -7,12 +8,18 @@ from cvlib.object_detection import draw_bbox
 import numpy as np
 import os
 import db
+from flask_cors import cross_origin
+from flask_pymongo import PyMongo
+from datetime import datetime
 
 app = Flask(__name__)
+app.config['MONGO_URI'] = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/test?retryWrites=true&w=majority'
+mongo = PyMongo(app)
 
-@app.route("/")
-def home():
-    return "Hello, Flask!"
+# @app.route("/hello")
+# @cross_origin()
+# def home():
+#     return jsonify({"Results: ": requests.get('http://localhost:2000/check').content})
 
 @app.route("/test", methods=['GET', 'POST'])
 def test():
@@ -31,8 +38,8 @@ def test():
 @app.route("/predict/one",methods=["POST"])
 def predict_one():
     imagefile = request.files.get('imagefile', '')
-    imagefile.save('C:\\Users\\User\\FRESTY\\uploaded_images\\test_image_one.jpg')
-    img = cv2.imread('C:\\Users\\User\\FRESTY\\uploaded_images\\test_image_one.jpg')
+    imagefile.save('./uploaded_images/test_image_one.jpg')
+    img = cv2.imread('./uploaded_images/test_image_one.jpg')
     bbox, label, conf = cv.detect_common_objects(img)
     foreground = img
     print(label)
@@ -68,16 +75,25 @@ def predict_one():
         new_image = cv2.drawContours(mask,[c],0,255,-1,)
         new_image = cv2.bitwise_and(foreground, foreground, mask = equalize)
 
-        cv2.imwrite('C:\\Users\\User\\FRESTY\\uploaded_images\\image.png', new_image)
+        # cv2.imwrite('C:\\Users\\User\\FRESTY\\uploaded_images\\image.png', new_image)
         # ----------------
         # <<Changing the background color to white>>
-        image="C:\\Users\\User\\FRESTY\\uploaded_images\\image.png"
-        image = cv2.imread(image)
-        image[np.where((image==[0,0,0]).all(axis=2))]=[255,255,255]
-        cv2.imwrite('C:\\Users\\User\\FRESTY\\uploaded_images\\image_new.png',image)
-        img = cv2.imread('C:\\Users\\User\\FRESTY\\uploaded_images\\image_new.png')
+        # image="C:\\Users\\User\\FRESTY\\uploaded_images\\image.png"
+        # image = cv2.imread(image)
+        new_image[np.where((new_image==[0,0,0]).all(axis=2))]=[255,255,255]
+        # cv2.imwrite('../image_new.png',image)
+        # img = cv2.imread('C:\\Users\\User\\FRESTY\\uploaded_images\\image_new.png')
         # ----------------
-        result = prediction(img)
+        result = prediction(new_image)
+        now = datetime.now()
+        date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
+        path_1 = './uploaded_images/image_'
+        extension = '.png'
+        image_name = 'image_'+date_time+extension
+        image_new = path_1+date_time+extension
+        cv2.imwrite(image_new,new_image)
+        # mongo.db.save_file(image_name,new_image)
+        mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'one'})
         return jsonify({"Quality grading results: ": result})
     else:
         return jsonify({"Results: ": "It neither a fruit nor a vegetable"})
@@ -86,9 +102,9 @@ def predict_one():
 @app.route("/predict/many",methods=["POST"])
 def predict_many():
     imagefile = request.files.get('imagefile', '')
-    imagefile.save('C:\\Users\\User\\FRESTY\\uploaded_images\\test_image_many.jpg')
-    img = cv2.imread('C:\\Users\\User\\FRESTY\\uploaded_images\\test_image_many.jpg')
-    img_dummy = cv2.imread('C:\\Users\\User\\FRESTY\\uploaded_images\\test_image_many.jpg')
+    imagefile.save('./uploaded_images/test_image_many.jpg')
+    img = cv2.imread('./uploaded_images/test_image_many.jpg')
+    img_dummy = cv2.imread('./uploaded_images/test_image_many.jpg')
     bbox, label, conf = cv.detect_common_objects(img)
     output_image = draw_bbox(img, bbox, label, conf)
     new_image = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -100,6 +116,16 @@ def predict_many():
             crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
             img = image_creation(crop_img)
             result = prediction(img)
+            now = datetime.now()
+            date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
+            path_1 = './uploaded_images/image_'
+            extension = '.png'
+            image_name = 'image_'+date_time+extension
+            image_new = path_1+date_time+extension
+            img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            cv2.imwrite(image_new,img_final)
+            # mongo.db.save_file(image_name,new_image)
+            mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
             print ("Quality grading results: ", result)
         if value == 'orange':
             val = label.index('orange')
@@ -107,6 +133,16 @@ def predict_many():
             crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
             img = image_creation(crop_img)
             result = prediction(img)
+            now = datetime.now()
+            date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
+            path_1 = './uploaded_images/image_'
+            extension = '.png'
+            image_name = 'image_'+date_time+extension
+            image_new = path_1+date_time+extension
+            img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            cv2.imwrite(image_new,img_final)
+            # mongo.db.save_file(image_name,new_image)
+            mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
             print ("Quality grading results: ", result)
         if value == 'tomato':
             val = label.index('tomato')
@@ -114,6 +150,16 @@ def predict_many():
             crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
             img = image_creation(crop_img)
             result = prediction(img)
+            now = datetime.now()
+            date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
+            path_1 = './uploaded_images/image_'
+            extension = '.png'
+            image_name = 'image_'+date_time+extension
+            image_new = path_1+date_time+extension
+            img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            cv2.imwrite(image_new,img_final)
+            # mongo.db.save_file(image_name,new_image)
+            mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
             print ("Quality grading results: ", result)
         i=i+1
     return jsonify({"Results: ": "Process successfully ended"})
@@ -154,7 +200,7 @@ def image_creation(foreground):
 
 
 def prediction(new_image):
-    file_name = 'C:\\Users\\User\\fresty.h5'
+    file_name = 'fresty.h5'
     model = tf.keras.models.load_model(file_name)
     print ("Model loded")
     model.compile(optimizer='adam',
@@ -173,7 +219,6 @@ def prediction(new_image):
         return "You can decide whether putting it market or not"
     else:
         return "It's good to go to market!"
-
 
 if __name__ == '__main__':
     app.run()
