@@ -1,0 +1,5 @@
+---
+applications:
+- name: login
+  memory: 128m
+  instances: 2

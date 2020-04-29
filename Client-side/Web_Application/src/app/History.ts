@@ -1,8 +1,9 @@
 export class History{
     constructor(
         public date:string,
-        public item:string,
-        public qualityResult:string
+        public items:string,
+        public qualityResult:string,
+        public count:string
         ){
 
     }
