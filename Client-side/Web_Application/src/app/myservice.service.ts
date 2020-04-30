@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs';
 
 import { History } from './History';
+import {PredictedImages} from './models/PredictedImages';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,12 @@ export class MyserviceService {
     return this._http.get('http://localhost:8080/vehicle1', {
        observe:'body',
        params: new HttpParams().append('token', localStorage.getItem('token'))
-    }); 
+    });
   }
-  
+
   getAllTheHistory(){
-      return this._http.get<History[]>('http://localhost:8080/vehicle1')
-    }
+      return this._http.get<PredictedImages[]>('http://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImage')
+  }
 
   // getAllTheHistory(): Observable<any>{
   //   return this._http.get('http://localhost:8080/vehicle1');
