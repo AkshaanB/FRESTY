@@ -139,7 +139,7 @@ app.post('/predictedImages', upload.single('image'), (req, res, next) => {
 
 
 // Get all uploaded images
-app.get('/predictedImages', (req, res, next) => {
+app.get('/predictedImage', (req, res, next) => {
     const {email} = req.query;
     let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/predictedPhotos';
     mongoose.connect(url, (err) => {
@@ -161,9 +161,22 @@ app.get('/predictedImages', (req, res, next) => {
         // Manually set the correct URL to each image
         for (let i = 0; i < predictedimages.length; i++) {
             var img = predictedimages[i];
-            img.url = req.protocol + '://' + req.get('host') + '/images/' + img._id;
+            img.url = req.protocol + '://' + req.get('host') + '/predicted/' + img._id;
             console.log(req.protocol);
         }
         res.json(predictedimages);
+    })
+});
+
+app.get('/predicted/:id', (req, res, next) => {
+    let imgId = req.params.id;
+ 
+    predictedImage.findById(imgId, (err, image) => {
+        if (err) {
+            res.sendStatus(400);
+        }
+        // stream the image back by loading the file
+        res.setHeader('Content-Type', 'image/jpeg');
+        fs.createReadStream(path.join(UPLOAD_PATH, image.filename)).pipe(res);
     })
 });
