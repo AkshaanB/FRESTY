@@ -31,7 +31,7 @@
                 <div class="input-div one focus">
                     <div class="i"><i class="fa fa-id-badge"></i></div>
                     <div>
-                        <input class="input" formControlName="email" placeholder="Username" type="text">
+                        <input class="input" formControlName="email" placeholder="Username" type="text"><br><br><br>
                         <span *ngIf="isValid('email')" style="color:red"><b>Entered username is invalid</b></span>
                     </div>
                 </div> 
@@ -39,7 +39,7 @@
                  <div class="input-div two focus">
                     <div class="i"><i class="fa fa-lock"></i></div>
                     <div>
-                        <input class="input" formControlName="password" placeholder="Password" type="password">
+                        <input class="input" formControlName="password" placeholder="Password" type="password"><br><br><br>
                         <span *ngIf="isValid('password')" style="color:red"><b>Password cannot be blank</b></span>
                     </div>
                 </div>

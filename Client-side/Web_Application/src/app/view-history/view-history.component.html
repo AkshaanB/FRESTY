@@ -45,14 +45,16 @@
                         <tr>
                             <th><b>DATE</b></th>
                             <th class="text-center"><b>ITEMS</b></th>
-                            <th class="text-center"><b>QUALITY RESULT</b></th>
+                            <th class="text-center"><b> RESULTS</b></th>
+                            <th class="text-center"><b>ONE OR MANY</b></th>
                         </tr>
                     
                     <tbody>
                         <tr *ngFor="let history of allTheHistory">
                             <td class="no">{{history.date}}</td>
-                            <td class="text-left">{{history.item}}</td>
+                            <td class="unit"><a href="https://www.hdwallpaper.nu/wp-content/uploads/2017/03/tomato-3.jpg" target="_blank"><b>{{history.items}}</b></a></td>
                             <td class="unit">{{history.qualityResult}}</td>
+                            <td class="unit">{{history.count}}</td>
                         </tr>
                     </tbody>
                 </table><br>
