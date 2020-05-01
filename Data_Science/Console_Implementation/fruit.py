@@ -1,5 +1,5 @@
 import flask
-# import requests
+import requests
 from flask import Flask, jsonify, request
 import tensorflow as tf
 import cv2
@@ -16,10 +16,12 @@ app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/test?retryWrites=true&w=majority'
 mongo = PyMongo(app)
 
-# @app.route("/hello")
-# @cross_origin()
-# def home():
-#     return jsonify({"Results: ": requests.get('http://localhost:2000/check').content})
+@app.route("/hello")
+@cross_origin()
+def home():
+    f = request.files['file']  
+    f.save(f.filename)
+    print(response.json())
 
 @app.route("/test", methods=['GET', 'POST'])
 def test():
@@ -92,8 +94,19 @@ def predict_one():
         image_name = 'image_'+date_time+extension
         image_new = path_1+date_time+extension
         cv2.imwrite(image_new,new_image)
-        # mongo.db.save_file(image_name,new_image)
-        mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'one'})
+        # database = db.test_collection
+        # data=open(image_new, encoding="utf8", errors='ignore')
+        # thedata=data.read()
+        # image = {
+        #     "file_name": image_name,
+        #     "contents" : imagefile
+        # }
+        # database.insert(image)
+        content = cv2.imread(image_new)
+        url="https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImages"
+        response = requests.post(url, data={'image':content,'results':result})
+        # mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'one'})
+        print(response.status_code)
         return jsonify({"Quality grading results: ": result})
     else:
         return jsonify({"Results: ": "It neither a fruit nor a vegetable"})
