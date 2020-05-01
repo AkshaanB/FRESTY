@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../authentication/auth.service'
 import { Storage } from '@ionic/storage';
-import { ActionSheetController, ToastController, Platform, LoadingController } from '@ionic/angular';
+import { ActionSheetController, ToastController } from '@ionic/angular';
 
 //For camera 
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 
 //For http requests
 import { HttpClient } from '@angular/common/http';
+
+
 
 @Component({
   selector: 'app-account',
@@ -19,8 +21,9 @@ export class AccountPage implements OnInit {
   capturedImage: string;  //for camera image
   image: any;   //for gallery image
 
+  //properties for the native camera 
   options: CameraOptions = {
-    quality: 30,
+    quality: 100,
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE
@@ -41,8 +44,6 @@ export class AccountPage implements OnInit {
     this.image = event.target.files[0];
   }
 
-
-
   async selectImage() {
     const actionSheet = await this.actionSheetController.create({
       header: "Select Image source",
@@ -51,8 +52,9 @@ export class AccountPage implements OnInit {
         handler: () => {                      //for retrive images from the phone gallery
           const formData = new FormData();
           formData.append('image', this.image);   //to add images to the image file 
-          this.http.post('http://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
-            console.log(response);
+          this.http.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
+          console.log(response);
+          this.displayToast("Image uploaded");
           });
         }
       },
@@ -62,6 +64,7 @@ export class AccountPage implements OnInit {
           this.camera.getPicture(this.options).then((imageData) => {
             let base64Image = 'data:image/jpeg;base64,' + imageData;
             this.capturedImage = base64Image;
+            console.log(this.capturedImage);
           }, (err) => {
             console.log(err);
           });
@@ -89,6 +92,15 @@ export class AccountPage implements OnInit {
       duration: 4000
     });
     toast.then(toast => toast.present());
+  }
+
+  async displayToast(toastMessage) {
+    const toast = await this.toastController.create({
+        message: toastMessage,
+        position: 'top',
+        duration: 3000
+    });
+    toast.present();
   }
 
 }
