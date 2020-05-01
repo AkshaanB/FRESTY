@@ -29,15 +29,6 @@ def test():
     db.db.predictedimages_collection.insert_one({"name": "Akshaan"})
     return jsonify({"Results: ": "Connected to the data base!"})
 
-# @app.route("/predict",methods=['POST','GET'])
-# def predict():
-#     file_name = 'fresty.h5'
-#     model = tf.keras.models.load_model(file_name)
-#     return "Quality grading..."
-
-# APP_ROOT = os.path.dirname(os.path.abspath(__file__))
-# target = os.path.join(APP_ROOT,'uploaded_images/')
-
 @app.route("/predict/one",methods=["POST"])
 def predict_one():
     imagefile = request.files.get('imagefile', '')
@@ -77,16 +68,7 @@ def predict_one():
         mask = np.zeros(image.shape,np.uint8)
         new_image = cv2.drawContours(mask,[c],0,255,-1,)
         new_image = cv2.bitwise_and(foreground, foreground, mask = equalize)
-
-        # cv2.imwrite('C:\\Users\\User\\FRESTY\\uploaded_images\\image.png', new_image)
-        # ----------------
-        # <<Changing the background color to white>>
-        # image="C:\\Users\\User\\FRESTY\\uploaded_images\\image.png"
-        # image = cv2.imread(image)
         new_image[np.where((new_image==[0,0,0]).all(axis=2))]=[255,255,255]
-        # cv2.imwrite('../image_new.png',image)
-        # img = cv2.imread('C:\\Users\\User\\FRESTY\\uploaded_images\\image_new.png')
-        # ----------------
         result = prediction(new_image)
         now = datetime.now()
         date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
@@ -95,26 +77,12 @@ def predict_one():
         image_name = 'image_'+date_time+extension
         image_new = path_1+date_time+extension
         cv2.imwrite(image_new,new_image)
-        # database = db.test_collection
-        # data=open(image_new, encoding="utf8", errors='ignore')
-        # thedata=data.read()
-        # image = {
-        #     "file_name": image_name,
-        #     "contents" : imagefile
-        # }
-        # database.insert(image)
-        # content = cv2.imread(image_new)
-        # url="https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImages"
-        # response = requests.post(url, data={'image':content,'results':result})
-        # # mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'one'})
-        # print(response.status_code)
         if 'imagefile' in request.files:
             imagefile = request.files['imagefile']
             imagefile.filename = image_name
             mongo.save_file(imagefile.filename,imagefile)
             mongo.db.predictedimages.insert_one({"email ": "akshaanbandara@gmail.com","filename ": imagefile.filename,"results ": result,"count ":"one"})
             print("Image saved to database successfully!")
-        # final_image = send_file(new_image,attachment_filename=image_name, mimetype='image/png')
         return jsonify({"Quality grading results: ": result})
     else:
         return jsonify({"Results: ": "It neither a fruit nor a vegetable"})
