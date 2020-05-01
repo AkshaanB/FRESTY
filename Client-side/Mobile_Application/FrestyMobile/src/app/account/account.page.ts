@@ -18,13 +18,13 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AccountPage implements OnInit {
 
-  capturedImage: string;  //for camera image
+  imageData;  //for camera image
   image: any;   //for gallery image
 
   //properties for the native camera 
   options: CameraOptions = {
     quality: 100,
-    destinationType: this.camera.DestinationType.DATA_URL,
+    destinationType: this.camera.DestinationType.FILE_URI,
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE
   }
@@ -53,8 +53,8 @@ export class AccountPage implements OnInit {
           const formData = new FormData();
           formData.append('image', this.image);   //to add images to the image file 
           this.http.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
-          console.log(response);
-          this.displayToast("Image uploaded");
+            console.log(response);
+            this.displayToast("Image uploaded");
           });
         }
       },
@@ -62,9 +62,21 @@ export class AccountPage implements OnInit {
         text: 'Scan from Camera and Send',
         handler: () => {           //for native camera
           this.camera.getPicture(this.options).then((imageData) => {
-            let base64Image = 'data:image/jpeg;base64,' + imageData;
-            this.capturedImage = base64Image;
-            console.log(this.capturedImage);
+
+            // imageData is either a base64 encoded string or a file URI
+            this.imageData = imageData;
+            console.log("value : " + imageData);
+
+            const imageBlob = this.dataURItoBlob(this.imageData);
+            console.log("new Value : " + imageBlob);
+
+            const formData = new FormData();
+            formData.append('image', imageBlob);
+            this.http.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
+              console.log(response);
+              this.displayToast('Image uploaded');
+            });
+
           }, (err) => {
             console.log(err);
           });
@@ -77,6 +89,19 @@ export class AccountPage implements OnInit {
       ]
     });
     await actionSheet.present();
+  }
+
+
+  //to convert the base64 image to blobfile
+  dataURItoBlob(dataURI) {
+    const byteString = window.atob(dataURI);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
+    return blob;
   }
 
   logout() {
@@ -96,9 +121,9 @@ export class AccountPage implements OnInit {
 
   async displayToast(toastMessage) {
     const toast = await this.toastController.create({
-        message: toastMessage,
-        position: 'top',
-        duration: 3000
+      message: toastMessage,
+      position: 'top',
+      duration: 3000
     });
     toast.present();
   }
