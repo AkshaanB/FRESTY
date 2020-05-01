@@ -1,6 +1,6 @@
 import flask
-# import requests
-from flask import Flask, jsonify, request
+import requests
+from flask import Flask, jsonify, request, send_file
 import tensorflow as tf
 import cv2
 import cvlib as cv
@@ -11,19 +11,22 @@ import db
 from flask_cors import cross_origin
 from flask_pymongo import PyMongo
 from datetime import datetime
+import io
 
 app = Flask(__name__)
-app.config['MONGO_URI'] = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/test?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/accounts?retryWrites=true&w=majority'
 mongo = PyMongo(app)
 
-# @app.route("/hello")
-# @cross_origin()
-# def home():
-#     return jsonify({"Results: ": requests.get('http://localhost:2000/check').content})
+@app.route("/hello")
+@cross_origin()
+def home():
+    f = request.files['file']  
+    f.save(f.filename)
+    print(response.json())
 
 @app.route("/test", methods=['GET', 'POST'])
 def test():
-    db.db.test_collection.insert_one({"name": "Akshaan"})
+    db.db.predictedimages_collection.insert_one({"name": "Akshaan"})
     return jsonify({"Results: ": "Connected to the data base!"})
 
 # @app.route("/predict",methods=['POST','GET'])
@@ -92,8 +95,26 @@ def predict_one():
         image_name = 'image_'+date_time+extension
         image_new = path_1+date_time+extension
         cv2.imwrite(image_new,new_image)
-        # mongo.db.save_file(image_name,new_image)
-        mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'one'})
+        # database = db.test_collection
+        # data=open(image_new, encoding="utf8", errors='ignore')
+        # thedata=data.read()
+        # image = {
+        #     "file_name": image_name,
+        #     "contents" : imagefile
+        # }
+        # database.insert(image)
+        # content = cv2.imread(image_new)
+        # url="https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImages"
+        # response = requests.post(url, data={'image':content,'results':result})
+        # # mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'one'})
+        # print(response.status_code)
+        if 'imagefile' in request.files:
+            imagefile = request.files['imagefile']
+            imagefile.filename = image_name
+            mongo.save_file(imagefile.filename,imagefile)
+            mongo.db.predictedimages.insert_one({"email ": "akshaanbandara@gmail.com","filename ": imagefile.filename,"results ": result,"count ":"one"})
+            print("Image saved to database successfully!")
+        # final_image = send_file(new_image,attachment_filename=image_name, mimetype='image/png')
         return jsonify({"Quality grading results: ": result})
     else:
         return jsonify({"Results: ": "It neither a fruit nor a vegetable"})
@@ -125,7 +146,7 @@ def predict_many():
             img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             cv2.imwrite(image_new,img_final)
             # mongo.db.save_file(image_name,new_image)
-            mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
+            # mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
             print ("Quality grading results: ", result)
         if value == 'orange':
             val = label.index('orange')
@@ -142,7 +163,7 @@ def predict_many():
             img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             cv2.imwrite(image_new,img_final)
             # mongo.db.save_file(image_name,new_image)
-            mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
+            # mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
             print ("Quality grading results: ", result)
         if value == 'tomato':
             val = label.index('tomato')
@@ -159,9 +180,15 @@ def predict_many():
             img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             cv2.imwrite(image_new,img_final)
             # mongo.db.save_file(image_name,new_image)
-            mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
+            # mongo.db.test_collection.insert({'image':image_name,'result':result,'one/many':'many'})
             print ("Quality grading results: ", result)
         i=i+1
+    if 'imagefile' in request.files:
+            imagefile = request.files['imagefile']
+            imagefile.filename = image_name
+            mongo.save_file(imagefile.filename,imagefile)
+            mongo.db.predictedimages.insert_one({"email ": "akshaanbandara@gmail.com","filename ": imagefile.filename, "original / created: " : "original"})
+            print("Image saved to database successfully!")
     return jsonify({"Results: ": "Process successfully ended"})
 
 
