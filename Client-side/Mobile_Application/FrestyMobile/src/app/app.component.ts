@@ -28,6 +28,7 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.statusBar.show();
 
       this.auth.authenticationState.subscribe(userState => {
         if(userState){
