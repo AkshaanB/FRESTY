@@ -49,15 +49,15 @@ export class AccountPage implements OnInit {
       buttons: [{
         text: 'Send from Gallery',
         handler: () => {                      //for retrive images from the phone gallery
-          const formData = new FormData();   
+          const formData = new FormData();
           formData.append('image', this.image);   //to add images to the image file 
-          this.http.post('http://localhost:3200/images', formData).subscribe((response: any) => {
+          this.http.post('http://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
             console.log(response);
           });
         }
       },
       {
-        text: 'Scan from Camera',  
+        text: 'Scan from Camera and Send',
         handler: () => {           //for native camera
           this.camera.getPicture(this.options).then((imageData) => {
             let base64Image = 'data:image/jpeg;base64,' + imageData;

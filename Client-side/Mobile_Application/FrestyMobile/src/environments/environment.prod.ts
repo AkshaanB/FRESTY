@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  url: 'http://login-insightful-grysbok-fb.cfapps.eu10.hana.ondemand.com'      //for --prod version
+  url: 'http://localhost:5000'      //for --prod version
 };
 

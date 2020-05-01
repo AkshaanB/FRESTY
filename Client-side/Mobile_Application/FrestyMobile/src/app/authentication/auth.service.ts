@@ -19,7 +19,7 @@ const JWT_TOKEN = 'get_token';   //where the token will be saved
 export class AuthService {
 
   url = environment.url;
-  user = null;
+  //user = null;
   authenticationState = new BehaviorSubject(false); //to check the authentication state 
 
   constructor(private http: HttpClient, 
@@ -30,18 +30,18 @@ export class AuthService {
      private router: Router) { 
 
       this.platform.ready().then(() => {
-        this.tokenCheck();      //to check if the token is saved previously
+        this.tokenCheck();      //to check if the token is saved previously 
       });
     }
 
     tokenCheck(){
       this.storage.get(JWT_TOKEN).then(tokenKey =>{
         if(tokenKey){
-          let decoded = this.jwtHelper.decodeToken(tokenKey);  //from jwtHelperService 
+          //let decoded = this.jwtHelper.decodeToken(tokenKey);  //from jwtHelperService 
           let isExpired = this.jwtHelper.isTokenExpired(tokenKey);
 
           if(!isExpired){
-            this.user = decoded; 
+            //this.user = decoded; 
             this.authenticationState.next(true);  //set to true after the user logged in
           }else{
             this.storage.remove(JWT_TOKEN);  //if not the token will be removed
@@ -51,11 +51,11 @@ export class AuthService {
     }
 
     signIn(details){  //signin method for http post request 
-      return this.http.post(`${this.url}/user/login`, details)
+      return this.http.post(`${this.url}user/login`, details)
       .pipe(
         tap(res => {   //something similar to mapping 
           this.storage.set(JWT_TOKEN, res['token']); //to set the token for the storage 
-          this.user = this.jwtHelper.decodeToken(res['token']);
+          //this.user = this.jwtHelper.decodeToken(res['token']);
           this.authenticationState.next(true);  //to set the authentication state to true 
         }),
         catchError(e => {
@@ -66,7 +66,7 @@ export class AuthService {
     }
 
     signUp(details){     //signup method for http post request 
-      return this.http.post(`${this.url}/user/register`, details).pipe(
+      return this.http.post(`${this.url}user/register`, details).pipe(
         catchError(e => {
           this.showErrorMessage(e.error.message); //to show the alert box 
           throw new Error(e);
