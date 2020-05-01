@@ -9,7 +9,7 @@ import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/n
 //For http requests
 import { HttpClient } from '@angular/common/http';
 
-
+import { Base64 } from '@ionic-native/base64/ngx';
 
 @Component({
   selector: 'app-account',
@@ -24,7 +24,7 @@ export class AccountPage implements OnInit {
   //properties for the native camera 
   options: CameraOptions = {
     quality: 100,
-    destinationType: this.camera.DestinationType.FILE_URI,
+    destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE
   }
@@ -34,6 +34,7 @@ export class AccountPage implements OnInit {
     private storage: Storage,
     private toastController: ToastController,
     private http: HttpClient,
+    private base64: Base64,
     private actionSheetController: ActionSheetController,
     private camera: Camera) { }
 
@@ -63,18 +64,18 @@ export class AccountPage implements OnInit {
         handler: () => {           //for native camera
           this.camera.getPicture(this.options).then((imageData) => {
 
-            // imageData is either a base64 encoded string or a file URI
+            // imageData as data url
             this.imageData = imageData;
             console.log("value : " + imageData);
 
-            const imageBlob = this.dataURItoBlob(this.imageData);
+            const imageBlob = this.convertToBlob(this.imageData);  //to convert data url to bolb object
             console.log("new Value : " + imageBlob);
 
             const formData = new FormData();
             formData.append('image', imageBlob);
             this.http.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
               console.log(response);
-              this.displayToast('Image uploaded');
+              this.displayToast('uploaded');
             });
 
           }, (err) => {
@@ -91,10 +92,9 @@ export class AccountPage implements OnInit {
     await actionSheet.present();
   }
 
-
   //to convert the base64 image to blobfile
-  dataURItoBlob(dataURI) {
-    const byteString = window.atob(dataURI);
+  convertToBlob(dataurl) {
+    const byteString = window.atob(dataurl);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const int8Array = new Uint8Array(arrayBuffer);
     for (let i = 0; i < byteString.length; i++) {

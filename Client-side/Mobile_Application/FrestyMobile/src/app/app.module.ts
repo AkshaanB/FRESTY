@@ -23,6 +23,8 @@ import { Network } from '@ionic-native/network/ngx';
 //for dialogs
 import { Dialogs } from '@ionic-native/dialogs/ngx';
 
+import { Base64 } from '@ionic-native/base64/ngx';
+
 
 export function jwtOptions(storage) {
   return {
@@ -53,6 +55,7 @@ export function jwtOptions(storage) {
     SplashScreen,
     Camera,
     Network,
+    Base64,
     Dialogs,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
