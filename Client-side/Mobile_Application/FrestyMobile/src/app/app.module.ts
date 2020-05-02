@@ -23,12 +23,15 @@ import { Network } from '@ionic-native/network/ngx';
 //for dialogs
 import { Dialogs } from '@ionic-native/dialogs/ngx';
 
+import { Base64 } from '@ionic-native/base64/ngx';
+
+
 export function jwtOptions(storage) {
   return {
     tokenGetter: () => {
       return storage.get('get_token');
     },
-    whitelistedDomains: ['localhost:5000'] //where the nodejs api running
+    domainArray: ['login-insightful-grysbok-fb.cfapps.eu10.hana.ondemand.com'] //where the nodejs api running
   }
 }
 
@@ -52,6 +55,7 @@ export function jwtOptions(storage) {
     SplashScreen,
     Camera,
     Network,
+    Base64,
     Dialogs,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../authentication/auth.service'
 import { Storage } from '@ionic/storage';
-import { ActionSheetController, ToastController, Platform, LoadingController } from '@ionic/angular';
+import { ActionSheetController, ToastController } from '@ionic/angular';
 
 //For camera 
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 
 //For http requests
 import { HttpClient } from '@angular/common/http';
+
+import { Base64 } from '@ionic-native/base64/ngx';
 
 @Component({
   selector: 'app-account',
@@ -16,11 +18,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AccountPage implements OnInit {
 
-  capturedImage: string;  //for camera image
+  imageData;  //for camera image
   image: any;   //for gallery image
 
+  //properties for the native camera 
   options: CameraOptions = {
-    quality: 30,
+    quality: 100,
     destinationType: this.camera.DestinationType.DATA_URL,
     encodingType: this.camera.EncodingType.JPEG,
     mediaType: this.camera.MediaType.PICTURE
@@ -31,6 +34,7 @@ export class AccountPage implements OnInit {
     private storage: Storage,
     private toastController: ToastController,
     private http: HttpClient,
+    private base64: Base64,
     private actionSheetController: ActionSheetController,
     private camera: Camera) { }
 
@@ -41,27 +45,39 @@ export class AccountPage implements OnInit {
     this.image = event.target.files[0];
   }
 
-
-
   async selectImage() {
     const actionSheet = await this.actionSheetController.create({
       header: "Select Image source",
       buttons: [{
         text: 'Send from Gallery',
         handler: () => {                      //for retrive images from the phone gallery
-          const formData = new FormData();   
+          const formData = new FormData();
           formData.append('image', this.image);   //to add images to the image file 
-          this.http.post('http://localhost:3200/images', formData).subscribe((response: any) => {
+          this.http.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
             console.log(response);
+            this.displayToast("Image uploaded");
           });
         }
       },
       {
-        text: 'Scan from Camera',  
+        text: 'Scan from Camera and Send',
         handler: () => {           //for native camera
           this.camera.getPicture(this.options).then((imageData) => {
-            let base64Image = 'data:image/jpeg;base64,' + imageData;
-            this.capturedImage = base64Image;
+
+            // imageData as data url
+            this.imageData = imageData;
+            console.log("value : " + imageData);
+
+            const imageBlob = this.convertToBlob(this.imageData);  //to convert data url to bolb object
+            console.log("new Value : " + imageBlob);
+
+            const formData = new FormData();
+            formData.append('image', imageBlob);
+            this.http.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
+              console.log(response);
+              this.displayToast('uploaded');
+            });
+
           }, (err) => {
             console.log(err);
           });
@@ -74,6 +90,18 @@ export class AccountPage implements OnInit {
       ]
     });
     await actionSheet.present();
+  }
+
+  //to convert the base64 image to blobfile
+  convertToBlob(dataurl) {
+    const byteString = window.atob(dataurl);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const int8Array = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+      int8Array[i] = byteString.charCodeAt(i);
+    }
+    const blob = new Blob([int8Array], { type: 'image/jpeg' });
+    return blob;
   }
 
   logout() {
@@ -89,6 +117,15 @@ export class AccountPage implements OnInit {
       duration: 4000
     });
     toast.then(toast => toast.present());
+  }
+
+  async displayToast(toastMessage) {
+    const toast = await this.toastController.create({
+      message: toastMessage,
+      position: 'top',
+      duration: 3000
+    });
+    toast.present();
   }
 
 }

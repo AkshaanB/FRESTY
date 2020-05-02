@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url: 'http://login-insightful-grysbok-fb.cfapps.eu10.hana.ondemand.com' //Development environment
+  url: 'https://login-insightful-grysbok-fb.cfapps.eu10.hana.ondemand.com/' //Development environment //where the server should run
 };
 
 /*
