@@ -119,8 +119,8 @@ def predict_many():
             cv2.imwrite(image_new,img_final)
             result_for_one = result
             print ("Quality grading results: ", result)
-            mongo.save_file(image_name,new_image)
-            mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created",'one/many':'many'})
+            # mongo.save_file(image_name,new_image)
+            # mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created",'one/many':'many'})
             count_apple = count_apple+1
         if value == 'orange':
             val = label.index('orange')
@@ -137,8 +137,8 @@ def predict_many():
             img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             cv2.imwrite(image_new,img_final)
             result_for_one = result
-            mongo.save_file(image_name,new_image)
-            mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created", 'one/many':'many'})
+            # mongo.save_file(image_name,new_image)
+            # mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created", 'one/many':'many'})
             print ("Quality grading results: ", result)
             count_orange = count_orange+1
         if value == 'tomato':
@@ -156,8 +156,8 @@ def predict_many():
             img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             cv2.imwrite(image_new,img_final)
             result_for_one = result
-            mongo.save_file(image_name,new_image)
-            mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created", 'one/many':'many'})
+            # mongo.save_file(image_name,new_image)
+            # mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created", 'one/many':'many'})
             print ("Quality grading results: ", result)
             count_tomato = count_tomato+1
         i=i+1
