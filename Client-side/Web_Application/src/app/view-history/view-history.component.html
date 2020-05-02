@@ -20,7 +20,7 @@
     <i class="fa fa-bars menu-toggle"></i>
     <ul class="nav">
         <li>
-            <a class="logout" (click)="logout()">
+            <a class="logout" (click)="logout()" style="cursor: pointer">
                <b> SIGN OUT</b>
             </a>
         </li>
@@ -31,33 +31,30 @@
     <div class="invoice overflow-auto">
         <div style="min-width: 600px">
             <main>
-                <div class="row contacts">
-                    <div class="col invoice-to">
-                        <!-- <h2 class="invoice-id">User name: {{username}}</h2>  -->
-                    </div>
+                <div class="row contacts">  
                     <div class="col invoice-details">
                         <h1 class="invoice-id">USER HISTORY</h1>
                     </div>
                 </div>
 
-                <table border="0" cellspacing="0" cellpadding="0">
-                    <thead></thead>
-                        <tr>
-                            <th><b>DATE OF INSPECTION</b></th>
-                            <th><b>ITEMS</b></th>
-                            <th><b> RESULTS</b></th>
-                            <th><b>ONE / MANY</b></th>
-                        </tr>
+              <table border="0" cellspacing="0" cellpadding="0">
+                <thead></thead>
+                <tr>
+                  <th><b>DATE OF INSPECTION</b></th>
+                  <th><b>ITEMS</b></th>
+                  <th><b> RESULTS</b></th>
+                  <th><b>ONE / MANY</b></th>
+                </tr>
 
-                    <tbody>
-                        <tr *ngFor="let history of predictedImages">
-                            <td class="no"><p ng-bind="date | date:'MM/dd/yyyy'">{{history.created}}</p></td>
-                            <td class="unit"><a href="{{history.url}}" target="_blank"><b>Click here to view Item </b></a></td>
-                            <td class="unit">{{history.results}}</td>
-                            <td class="unit">{{history.count}}</td>
-                        </tr>
-                    </tbody>
-                </table><br>
+                <tbody>
+                <tr *ngFor="let history of predictedImages">
+                  <td class="no"><p ng-bind="date | date:'MM/dd/yyyy'">{{history.created}}</p></td>
+                  <td class="unit"><a href="{{history.url}}" target="_blank"><b>Click here to view Item </b></a></td>
+                  <td class="unit">{{history.results}}</td>
+                  <td class="unit">{{history.count}}</td>
+                </tr>
+                </tbody>
+              </table><br>
 
                 <div class="notices">
                     <div>NOTICE :</div>
