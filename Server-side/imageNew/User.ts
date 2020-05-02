@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+import * as mongoose from 'mongoose'
 
-const UserSchema = mongoose.Schema({
+export var UserSchema =  mongoose.Schema({
   username: {
     type: String,
     required: true

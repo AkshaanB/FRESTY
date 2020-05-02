@@ -154,19 +154,30 @@ router.post(
           }
         };
   
+        var tok;
         jwt.sign(
           payload,
           "secret",
           {
-            expiresIn: 3600
+            expiresIn: 10000
           },
           (err, token) => {
             if (err) throw err;
-            res.status(200).json({
-              token
-            });
+            // tok = token;
+              
+            //  res.setheader("x-token",token);
+              var url = 'https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/me/'+token;
+              //var url = 'http://localhost:8080/me/'+token;
+              res.redirect(url);
+
+              // res.status(200).json({
+              //   token
+              // });
           }
         );
+
+       
+
       } catch (e) {
         console.error(e);
         res.status(500).json({
