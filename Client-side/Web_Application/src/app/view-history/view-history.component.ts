@@ -10,25 +10,6 @@ import {PredictedImages} from '../models/PredictedImages';
   styleUrls: ['./view-history.component.scss']
 })
 export class ViewHistoryComponent implements OnInit {
-  // allTheHistory:History[];
-  // username = '';
-  //
-  // constructor(private myservice:MyserviceService, private _router:Router) {
-  //   this.myservice.getUserName()
-  //   .subscribe(
-  //     data => this.username= data.toString(),
-  //    // error => this._router.navigate(['/getstarted/product/signin'])
-  //   )
-  //  }
-  //
-  // ngOnInit(): void {
-  //   this.myservice.getAllTheHistory().subscribe(
-  //     res=>{
-  //       console.log(res);
-  //       this.allTheHistory = res;
-  //     }
-  //   );
-  // }
 
   predictedImages: PredictedImages[];
 
@@ -41,12 +22,11 @@ export class ViewHistoryComponent implements OnInit {
         this.predictedImages = response;
       }
     );
-
-
   }
 
   logout(){
     localStorage.removeItem('token');
+    localStorage.clear();
     this._router.navigate(['/getstarted/product/signin']);
   }
 
