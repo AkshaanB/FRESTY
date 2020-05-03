@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../authentication/auth.service'
 import { Storage } from '@ionic/storage';
-import { ActionSheetController, ToastController } from '@ionic/angular';
+import { ActionSheetController, ToastController, AlertController } from '@ionic/angular';
 
 //For camera 
 import { Camera, CameraOptions, PictureSourceType } from '@ionic-native/camera/ngx';
 
 //For http requests
 import { HttpClient } from '@angular/common/http';
-
-import { Base64 } from '@ionic-native/base64/ngx';
 
 @Component({
   selector: 'app-account',
@@ -34,7 +32,6 @@ export class AccountPage implements OnInit {
     private storage: Storage,
     private toastController: ToastController,
     private http: HttpClient,
-    private base64: Base64,
     private actionSheetController: ActionSheetController,
     private camera: Camera) { }
 
@@ -55,8 +52,9 @@ export class AccountPage implements OnInit {
           formData.append('image', this.image);   //to add images to the image file 
           this.http.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
             console.log(response);
-            this.displayToast("Image uploaded");
+
           });
+          this.displayToast("Image uploaded");
         }
       },
       {
@@ -75,9 +73,9 @@ export class AccountPage implements OnInit {
             formData.append('image', imageBlob);
             this.http.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images', formData).subscribe((response: any) => {
               console.log(response);
-              this.displayToast('uploaded');
-            });
 
+            });
+            this.displayToast('Image uploaded');
           }, (err) => {
             console.log(err);
           });
@@ -104,6 +102,7 @@ export class AccountPage implements OnInit {
     return blob;
   }
 
+  //logout function
   logout() {
     this.authService.logout();
   }
@@ -119,6 +118,7 @@ export class AccountPage implements OnInit {
     toast.then(toast => toast.present());
   }
 
+  //to display a toast message 
   async displayToast(toastMessage) {
     const toast = await this.toastController.create({
       message: toastMessage,
