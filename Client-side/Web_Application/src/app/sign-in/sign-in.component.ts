@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-  
+
 export class SignInComponent implements OnInit {
 
   loginForm: FormGroup;
@@ -22,28 +22,23 @@ export class SignInComponent implements OnInit {
       password: new FormControl(null, Validators.required)
 
     });
-
-    this.loginForm.controls.password.valueChanges
-    .subscribe(
-      x => this.loginForm.controls.cnfpass.updateValueAndValidity()
-    );
    }
 
   ngOnInit(): void {
   }
 
-  isValid(controlName){ 
+  isValid(controlName) {
     return this.loginForm.get(controlName).invalid && this.loginForm.get(controlName).touched;
   }
 
-  passValidator(control: AbstractControl){
-    if(control && (control.value !== null || control.value !== undefined)){
-      const cnfpassValue = control.value; 
+  passValidator(control: AbstractControl) {
+    if (control && (control.value !== null || control.value !== undefined)) {
+      const cnfpassValue = control.value;
 
       const passControl = control.root.get('password');
-      if(passControl){
+      if (passControl) {
         const passValue = passControl.value;
-        if(passValue !== cnfpassValue || passValue === ''){
+        if (passValue !== cnfpassValue || passValue === '') {
           return{
             isError: true
           };
@@ -53,22 +48,20 @@ export class SignInComponent implements OnInit {
     return null;
   }
 
-  login(){
+  login() {
     console.log(this.loginForm.value);
 
-    if(this.loginForm.valid){
+    if (this.loginForm.valid) {
     this._myservice.login(this.loginForm.value)
     .subscribe(
       data => {
         console.log(data);
-        localStorage.setItem('token',data.toString());
-        this._router.navigate(['/getstarted/product/signin/viewhistory'])
+        localStorage.setItem('token', data.toString());
+        this._router.navigate(['/getstarted/product/signin/viewhistory']);
       },
-      error => {}
-      //error => {this.successMessage = 'some error'}
+      error => {this.successMessage = 'username or password is invalid. Try again'}
     );
-
     }
   }
-  
+
 }
