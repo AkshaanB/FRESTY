@@ -16,4 +16,4 @@ export var imageSchema = new mongoose.Schema({
     created: { type: Date, default: Date.now }
 });
  
-export const Image = mongoose.model<IImageModel>('Image', imageSchema);
+export const Image = mongoose.model('Image', imageSchema);
