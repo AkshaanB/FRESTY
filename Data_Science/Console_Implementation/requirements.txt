@@ -1,6 +1,7 @@
 Flask==1.1.1
-tensorflow==2.0.0
+tensorflow==2.0.0a0
 opencv-python==4.2.0.32
 cvlib==0.2.4
-numpy==1.16.5
 Flask-PyMongo==2.3.0
+numpy==1.16.5
+requests==2.22.0
