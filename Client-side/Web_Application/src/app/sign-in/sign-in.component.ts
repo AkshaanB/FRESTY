@@ -59,7 +59,7 @@ export class SignInComponent implements OnInit {
         localStorage.setItem('token', data.toString());
         this._router.navigate(['/getstarted/product/signin/viewhistory']);
       },
-      error => {this.successMessage = 'Please recheck your username and password'}
+      error => {this.successMessage = 'username or password is invalid. Try again'}
     );
     }
   }
