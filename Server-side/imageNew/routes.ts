@@ -5,7 +5,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import jwt = require('jsonwebtoken');
 import * as mongoose from 'mongoose'
-import cookieParser = require('cookie-parser')
+import cookieParser = require('cookie-parser');
+var FormData = require('form-data');
+var Request = require("request");
 
 var just;
 
@@ -35,6 +37,7 @@ app.post('/images', upload.single('image'), (req, res, next) => {
         }
         res.status(201).send({ image });
     });
+    res.redirect("https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/image");
 });
  
 
@@ -62,12 +65,74 @@ app.get('/image', (req, res, next) => {
             var img = images[images.length-1];
             Image.findById(img._id, (err, image) => {
                 // stream the image back by loading the file
+                //res.setHeader('Content-Type', 'image/jpeg');
+                //fs.createReadStream(path.join(UPLOAD_PATH, image.filename)).pipe(res);
+                var formData = {
+                    name: 'image',
+                    image: {
+                        value: fs.createReadStream(path.join(UPLOAD_PATH, image.filename)),
+                        options: {
+                            filename: image.filename,
+                            email:just,
+                            contentType: 'image/jpeg'
+                        }
+                    }
+                };
+            
+                Request.post({
+                    "headers": {
+                        "Content-Type": "multipart/form-data"
+                    },
+                    //"url":"https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images",
+                    "url":"http://localhost:8080/images",
+                    "formData": formData
+                }, (error, response, body) => {
+                    if (error) {
+                        return console.log("Error: ", error);
+                    }
+                    let result = JSON.parse(body)
+                    //console.log(result);
+                    //console.log(result.url);
+                    res.send(result);
+                });
+            
+            });
+    });
+    //let imgId = req.params.id;
+});
+
+
+
+app.get('/send', (req, res, next) => {
+    //const {email} = req.query;
+    let url = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/accounts';
+    mongoose.connect(url, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log('Connected to MongoDb');
+        }
+    });
+    //console.log(email);
+
+
+    predictedImage.find({}, '-__v').lean().exec((err, images) => {
+        if (err) {
+            res.sendStatus(400);
+        }
+ 
+        // Manually set the correct URL to each image
+        
+            var img = images[images.length-1];
+            predictedImage.findById(img._id, (err, image) => {
+                // stream the image back by loading the file
                 res.setHeader('Content-Type', 'image/jpeg');
                 fs.createReadStream(path.join(UPLOAD_PATH, image.filename)).pipe(res);
             });
     });
     //let imgId = req.params.id;
 });
+
 
 
 
@@ -195,3 +260,6 @@ app.get('/me/:token', function(req, res, next) {
     });
   });
 });
+
+
+
