@@ -1,0 +1,5 @@
+1.download the code.
+2.install node modules. 
+3.1.run ionic cordova build ios to build the apk for ios devices. (use a mac for this purpose)
+3.2.run ionic cordova build android to build the apk for android devices. (use a windows machine)
+4.make sure to turn on mobile data or wifi while experiencing the application.
