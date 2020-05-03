@@ -7,18 +7,16 @@ import cvlib as cv
 from cvlib.object_detection import draw_bbox
 import numpy as np
 import os
-import db
-from flask_cors import cross_origin
+# import db
 from flask_pymongo import PyMongo
 from datetime import datetime
-import io
+# import io
 
 app = Flask(__name__)
 app.config['MONGO_URI'] = 'mongodb+srv://fresty_grading:20181234@fresty-quality-grading-gebmh.mongodb.net/accounts?retryWrites=true&w=majority'
 mongo = PyMongo(app)
 
-@app.route("/")
-@cross_origin()
+@app.route("/home")
 def home():
     return "Hello World!"
 
@@ -26,6 +24,15 @@ def home():
 def test():
     db.db.predictedimages_collection.insert_one({"name": "Akshaan"})
     return jsonify({"Results: ": "Connected to the data base!"})
+
+class Image:
+  def __init__(self,created, originalName, filename, result, email, count):
+    self.created = created
+    self.originalName = originalName
+    self.filename = filename
+    self.result = result
+    self.email = email
+    self.count = count
 
 @app.route("/predict/one",methods=["POST"])
 def predict_one():
@@ -76,12 +83,11 @@ def predict_one():
         image_name = 'image_'+date_time+extension
         image_new = path_1+date_time+extension
         cv2.imwrite(image_new,new_image)
-        if 'imagefile' in request.files:
-            imagefile = request.files['imagefile']
-            imagefile.filename = image_name
-            mongo.save_file(imagefile.filename,imagefile)
-            mongo.db.predictedimages.insert_one({"email ": email,"filename ": imagefile.filename,"results ": result,"count ":"one"})
-            print("Image saved to database successfully!")
+        files = {'image':open(image_new,'rb')}
+        data = {'results':result,'count':'one'}
+        res = requests.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImages', files=files, data=data)
+        print(res.status_code)
+        print("Image saved to database successfully!")
         return jsonify({"Quality grading results: ": result})
     else:
         return jsonify({"Results: ": "It neither a fruit nor a vegetable"})
@@ -102,78 +108,76 @@ def predict_many():
     count_orange = 0
     count_tomato = 0
     result_for_one = "text"
-    for value in label:
-        if value == 'apple':
-            val = label.index('apple')
-            crop_img = img_dummy[bbox[i][1]:bbox[i][3], bbox[i][0]:bbox[i][2]]
-            crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
-            img = image_creation(crop_img)
-            result = prediction(img)
-            now = datetime.now()
-            date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
-            path_1 = './uploaded_images/image_'
-            extension = '.png'
-            image_name = 'image_'+date_time+extension
-            image_new = path_1+date_time+extension
-            img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            cv2.imwrite(image_new,img_final)
-            result_for_one = result
-            print ("Quality grading results: ", result)
-            # mongo.save_file(image_name,new_image)
-            # mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created",'one/many':'many'})
-            count_apple = count_apple+1
-        if value == 'orange':
-            val = label.index('orange')
-            crop_img = img_dummy[bbox[i][1]:bbox[i][3], bbox[i][0]:bbox[i][2]]
-            crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
-            img = image_creation(crop_img)
-            result = prediction(img)
-            now = datetime.now()
-            date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
-            path_1 = './uploaded_images/image_'
-            extension = '.png'
-            image_name = 'image_'+date_time+extension
-            image_new = path_1+date_time+extension
-            img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            cv2.imwrite(image_new,img_final)
-            result_for_one = result
-            # mongo.save_file(image_name,new_image)
-            # mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created", 'one/many':'many'})
-            print ("Quality grading results: ", result)
-            count_orange = count_orange+1
-        if value == 'tomato':
-            val = label.index('tomato')
-            crop_img = img_dummy[bbox[i][1]:bbox[i][3], bbox[i][0]:bbox[i][2]]
-            crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
-            img = image_creation(crop_img)
-            result = prediction(img)
-            now = datetime.now()
-            date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
-            path_1 = './uploaded_images/image_'
-            extension = '.png'
-            image_name = 'image_'+date_time+extension
-            image_new = path_1+date_time+extension
-            img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            cv2.imwrite(image_new,img_final)
-            result_for_one = result
-            # mongo.save_file(image_name,new_image)
-            # mongo.db.test_collection.insert({'image':image_name,'result':result, "original / created: " : "created", 'one/many':'many'})
-            print ("Quality grading results: ", result)
-            count_tomato = count_tomato+1
-        i=i+1
-    if 'imagefile' in request.files:
+    if('apple' in label or 'orange' in label or 'tomato' in label):
+        for value in label:
+            if value == 'apple':
+                val = label.index('apple')
+                crop_img = img_dummy[bbox[i][1]:bbox[i][3], bbox[i][0]:bbox[i][2]]
+                crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
+                img = image_creation(crop_img)
+                result = prediction(img)
+                now = datetime.now()
+                date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
+                path_1 = './uploaded_images/image_'
+                extension = '.png'
+                image_name = 'image_'+date_time+extension
+                image_new = path_1+date_time+extension
+                img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                cv2.imwrite(image_new,img_final)
+                result_for_one = result
+                files = {'image':open(image_new,'rb')}
+                data = {'results':result,'count':'many'}
+                res = requests.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImages', files=files, data=data)
+                print(res.status_code)
+                print ("Quality grading results: ", result)
+                count_apple = count_apple+1
+            if value == 'orange':
+                val = label.index('orange')
+                crop_img = img_dummy[bbox[i][1]:bbox[i][3], bbox[i][0]:bbox[i][2]]
+                crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
+                img = image_creation(crop_img)
+                result = prediction(img)
+                now = datetime.now()
+                date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
+                path_1 = './uploaded_images/image_'
+                extension = '.png'
+                image_name = 'image_'+date_time+extension
+                image_new = path_1+date_time+extension
+                img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                cv2.imwrite(image_new,img_final)
+                result_for_one = result
+                files = {'image':open(image_new,'rb')}
+                data = {'results':result,'count':'many'}
+                res = requests.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImages', files=files, data=data)
+                print(res.status_code)
+                print ("Quality grading results: ", result)
+                count_orange = count_orange+1
+            if value == 'tomato':
+                val = label.index('tomato')
+                crop_img = img_dummy[bbox[i][1]:bbox[i][3], bbox[i][0]:bbox[i][2]]
+                crop_img = cv2.cvtColor(crop_img, cv2.COLOR_BGR2RGB)
+                img = image_creation(crop_img)
+                result = prediction(img)
+                now = datetime.now()
+                date_time = now.strftime("%d_%m_%Y_%H_%M_%S")
+                path_1 = './uploaded_images/image_'
+                extension = '.png'
+                image_name = 'image_'+date_time+extension
+                image_new = path_1+date_time+extension
+                img_final = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+                cv2.imwrite(image_new,img_final)
+                result_for_one = result
+                files = {'image':open(image_new,'rb')}
+                data = {'results':result,'count':'many'}
+                res = requests.post('https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImages', files=files, data=data)
+                print(res.status_code)
+                print ("Quality grading results: ", result_for_one)
+                count_tomato = count_tomato+1
+            i=i+1
         if(count_apple==1 or count_orange==1 or count_tomato==1):
-            imagefile = request.files['imagefile']
-            imagefile.filename = image_name
-            mongo.save_file(imagefile.filename,imagefile)
-            mongo.db.predictedimages.insert_one({"email ": email,"filename ": imagefile.filename, "results ": result_for_one, "original / created: " : "original","one/many":"one"})
             return jsonify({"Quality grading results: ": result})
-        else:
-            imagefile = request.files['imagefile']
-            imagefile.filename = image_name
-            mongo.save_file(imagefile.filename,imagefile)
-            mongo.db.originalImages.insert_one({"email ": email,"filename ": imagefile.filename, "original / created: " : "original","one/many":"many"})
-        print("Image saved to database successfully!")
+    else:
+        return jsonify({"Results: ": "It neither a fruit nor a vegetable"})
     return jsonify({"Results: ": "Process successfully ended"})
 
 
