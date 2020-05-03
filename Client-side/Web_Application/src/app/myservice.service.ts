@@ -14,24 +14,13 @@ export class MyserviceService {
   constructor(private _http: HttpClient) { }
 
   login(body:any){
-    return this._http.post('http:localhost:3000/login', body,{
+    return this._http.post('https://login-insightful-grysbok-fb.cfapps.eu10.hana.ondemand.com/user/login', body,{
       observe:'body'
-    });
-  }
-
-  getUserName(){
-    return this._http.get('http://localhost:8080/vehicle1', {
-       observe:'body',
-       params: new HttpParams().append('token', localStorage.getItem('token'))
     });
   }
 
   getAllTheHistory(){
       return this._http.get<PredictedImages[]>('http://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/predictedImage')
   }
-
-  // getAllTheHistory(): Observable<any>{
-  //   return this._http.get('http://localhost:8080/vehicle1');
-  // }
 
 }

@@ -13,7 +13,7 @@
     <a href="http://localhost:4200/getstarted" class="w3-bar-item w3-button"><i class="fa fa-home"></i> HOME</a>
       <a href="http://localhost:4200/getstarted/product" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-th"></i> ITEMS</a>
       <a href="http://localhost:4200/getstarted/product/signin" class="w3-bar-item w3-button w3-hide-small"><i class="fa fa-user"></i> SIGN IN</a>
-    </div>  
+    </div>
 </div>
 
 <body>
@@ -27,15 +27,15 @@
             <form action="sign-in.component.html" [formGroup] = "loginForm">
                 <img class="avatar" src="https://3.bp.blogspot.com/-Oim9AF6Czl8/XnW4czKg4pI/AAAAAAAAAOo/R3nC2AJyw683qkjW-NC5HKWEI_mLzscdwCK4BGAYYCw/s320/avatar.jpg">
                 <h2>Welcome</h2><br>
-                
+
                 <div class="input-div one focus">
                     <div class="i"><i class="fa fa-id-badge"></i></div>
                     <div>
-                        <input class="input" formControlName="email" placeholder="Username" type="text"><br><br><br>
-                        <span *ngIf="isValid('email')" style="color:red"><b>Entered username is invalid</b></span>
+                        <input class="input" formControlName="email" placeholder="Email" type="text"><br><br><br>
+                        <span *ngIf="isValid('email')" style="color:red"><b>Entered email is invalid</b></span>
                     </div>
-                </div> 
-                
+                </div>
+
                  <div class="input-div two focus">
                     <div class="i"><i class="fa fa-lock"></i></div>
                     <div>
@@ -48,7 +48,7 @@
                 <button class="btn" input type="submit" (click)="login()"><b>Sign in</b></button>
 
                 <div style="text-align:center;">
-                    {{successMessage}}
+                    <b style="color:red">{{successMessage}}</b>
                 </div>
             </form>
         </div>

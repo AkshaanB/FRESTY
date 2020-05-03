@@ -6,6 +6,7 @@ export interface IImageModel extends mongoose.Document {
     originalName: string; 
     results: string;
     count: string;
+    email: string;
     created: Date;
   };
  
@@ -14,8 +15,9 @@ export var imageSchema = new mongoose.Schema({
     filename: String,
     originalName: String,
     results: String,
+    email: String,
     count: String,
     created: { type: Date, default: Date.now }
 });
  
-export const predictedImage = mongoose.model<IImageModel>('predictedImage', imageSchema);
+export const predictedImage = mongoose.model('predictedImage', imageSchema);
