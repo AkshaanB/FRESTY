@@ -35,9 +35,10 @@ app.post('/images', upload.single('image'), (req, res, next) => {
         if (err) {
             return res.sendStatus(400);
         }
-        res.status(201).send({ image });
+        //res.status(201).send({ image });
     });
     res.redirect("https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/image");
+    //res.redirect("http://localhost:8080/image");
 });
  
 
@@ -68,8 +69,8 @@ app.get('/image', (req, res, next) => {
                 //res.setHeader('Content-Type', 'image/jpeg');
                 //fs.createReadStream(path.join(UPLOAD_PATH, image.filename)).pipe(res);
                 var formData = {
-                    name: 'image',
-                    image: {
+                    name: 'imagefile',
+                    imagefile: {
                         value: fs.createReadStream(path.join(UPLOAD_PATH, image.filename)),
                         options: {
                             filename: image.filename,
@@ -84,9 +85,9 @@ app.get('/image', (req, res, next) => {
                         "Content-Type": "multipart/form-data"
                     },
                     //"url":"https://imageupload-unexpected-otter-ow.cfapps.eu10.hana.ondemand.com/images",
-                    "url":"http://localhost:8080/images",
+                    "url":"https://fresty-275813.el.r.appspot.com/predict/many",
                     "formData": formData
-                }, (error, response, body) => {
+                },(error, response, body) => {
                     if (error) {
                         return console.log("Error: ", error);
                     }
