@@ -1,0 +1,4 @@
+---
+applications:
+- name: FRESTYAPP
+  buildpack: python_buildpack
